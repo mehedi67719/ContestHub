@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import logo from "../assets/Logo.avif";
 import { Link, NavLink } from "react-router";
-import Primarybtn from "../Component/Primarybtn";
+import Primarybtn from "./Primarybtn";
 
 const Navbar = ({ user, onLogout }) => {
   const [open, setOpen] = useState(false);
@@ -34,7 +34,7 @@ const Navbar = ({ user, onLogout }) => {
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-600 group-hover:w-full transition-all"></span>
           </NavLink>
 
-          <NavLink to="/all-contests" className={({isActive}) => `relative group ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>
+          <NavLink to="/allcontest" className={({isActive}) => `relative group ${isActive ? 'text-blue-600' : 'text-gray-700'}`}>
             All Contests
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-600 group-hover:w-full transition-all"></span>
           </NavLink>
