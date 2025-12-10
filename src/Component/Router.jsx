@@ -4,6 +4,8 @@ import Home from "../Pages/Home";
 import Allcontest from "../Pages/Allcontest";
 import Leaderboard from "../Pages/Leaderboard";
 import AboutUs from "../Pages/AboutUs";
+import Login from "../Pages/Authentication/Login.";
+import Register from "../Pages/Authentication/Register";
 
 
 export const router = createBrowserRouter([
@@ -26,6 +28,14 @@ export const router = createBrowserRouter([
         {
           path:"/about-us",
           Component:AboutUs
+        },
+        {
+          path:"/login",
+          Component:Login
+        },
+        {
+          path:"/register",
+          Component:Register
         }
     ]
   },
