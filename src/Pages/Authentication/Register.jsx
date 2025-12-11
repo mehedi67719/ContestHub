@@ -2,8 +2,15 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import Primarybtn from "../../Component/Primarybtn";
+import Useauth from "../../Component/Useauth";
 
 const Register = () => {
+
+  const {singinwithgoogle}=Useauth()
+
+
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,6 +37,7 @@ const Register = () => {
   };
 
   const handleGoogleRegister = () => {
+    singinwithgoogle()
     Swal.fire({
       icon: "success",
       title: "Google Sign-up Success!",
@@ -85,12 +93,11 @@ const Register = () => {
             className="p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl font-semibold hover:shadow-lg transition"
-          >
-            Register
-          </button>
+
+          <Primarybtn>Register</Primarybtn>
+
+
+
         </form>
 
         <div className="flex items-center my-5">

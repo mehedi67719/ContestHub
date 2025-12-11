@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import Primarybtn from "../../Component/Primarybtn";
+import Useauth from "../../Component/Useauth";
 
 const Login = () => {
+
+  const {singinwithgoogle}=Useauth()
+
+
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -27,6 +34,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
+    singinwithgoogle()
     Swal.fire({
       icon: "success",
       title: "Google Sign-in Successful",
@@ -71,12 +79,7 @@ const Login = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl font-semibold hover:shadow-lg transition"
-          >
-            Login
-          </button>
+          <Primarybtn>Login</Primarybtn>
 
         </form>
 

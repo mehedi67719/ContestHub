@@ -31,7 +31,7 @@ const Home = () => {
              placeholder="Search contests by type..."
              className="flex-1 h-full px-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700 placeholder-gray-400"
            />
-           <Primarybtn>Search</Primarybtn>
+           <Primarybtn >Search</Primarybtn>
          </div>
         </div>
         <div className="flex-1">

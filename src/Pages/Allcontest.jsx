@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-
+import Primarybtn from "../Component/Primarybtn";
 
 const Allcontest = () => {
   const [activeTab, setActiveTab] = useState("All");
@@ -33,7 +33,6 @@ const Allcontest = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-
       <h1 className="text-4xl font-bold text-center mb-10 text-gray-800">All Contests</h1>
 
       <div className="flex flex-wrap justify-center gap-3 mb-12">
@@ -56,7 +55,7 @@ const Allcontest = () => {
         {contests.map((contest) => (
           <div
             key={contest._id}
-            className="bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
+            className="bg-white rounded-2xl shadow hover:shadow-xl transition flex flex-col"
           >
             <img
               src={contest.image}
@@ -64,27 +63,19 @@ const Allcontest = () => {
               className="w-full h-56 object-cover"
             />
 
-            <div className="p-5 space-y-3">
-              <h2 className="text-xl font-semibold text-gray-800">
-                {contest.name}
-              </h2>
-
-              <p className="text-gray-600 text-sm">
-                {contest.description.slice(0, 80)}...
-              </p>
-
-              <p className="text-sm font-medium text-gray-700">
-                Participants:{" "}
-                <span className="text-blue-600 font-bold">
-                  {contest.participants}
-                </span>
-              </p>
-
-              <Link to={`/contest/${contest._id}`}>
-                <button className="w-full py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition font-medium">
-                  View Details
-                </button>
-              </Link>
+            <div className="p-5 flex flex-col flex-grow justify-between">
+              <div className="space-y-3">
+                <h2 className="text-xl font-semibold text-gray-800">{contest.name}</h2>
+                <p className="text-gray-600 text-sm">{contest.description.slice(0, 80)}...</p>
+                <p className="text-sm font-medium text-gray-700">
+                  Participants: <span className="text-blue-600 font-bold">{contest.participants}</span>
+                </p>
+              </div>
+              <div className="mt-4">
+                <Link to={`/contest/${contest._id}`}>
+                  <Primarybtn className="w-full">View Details</Primarybtn>
+                </Link>
+              </div>
             </div>
           </div>
         ))}
