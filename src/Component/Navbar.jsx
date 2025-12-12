@@ -5,7 +5,6 @@ import Useauth from "./Useauth";
 import Swal from "sweetalert2";
 import { Link, NavLink, useNavigate } from "react-router";
 
-
 const Navbar = () => {
   const { User, logout } = Useauth();
   const [profileOpen, setProfileOpen] = useState(false);
@@ -42,16 +41,10 @@ const Navbar = () => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
         setProfileOpen(false);
       }
-      if (mobileRef.current && !mobileRef.current.contains(e.target)) {
-        setMobileOpen(false);
-      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-
-  console.log(User)
 
   return (
     <header className="backdrop-blur-md bg-white/80 sticky top-0 z-50 shadow">
@@ -71,7 +64,11 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-4">
-          <button ref={mobileRef} onClick={() => setMobileOpen(p => !p)} className="md:hidden p-2 border rounded-md">
+          <button
+            ref={mobileRef}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden p-2 border rounded-md"
+          >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -79,7 +76,7 @@ const Navbar = () => {
 
           {User ? (
             <div className="relative" ref={profileRef}>
-              <button onClick={() => setProfileOpen(p => !p)} className="flex items-center gap-3">
+              <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-3">
                 <img src={User.photoURL} alt="user" className="w-10 h-10 rounded-full border object-cover" />
               </button>
 
@@ -88,12 +85,15 @@ const Navbar = () => {
                   <div className="flex items-center gap-3 mb-2">
                     <img src={User.photoURL} alt="u" className="w-10 h-10 rounded-full object-cover" />
                     <div>
-                      <p className="font-semibold text-gray-700 text-sm">{User.name || User.displayName || User.email}</p>
-                      <p className="text-xs text-gray-500">{User.role ? User.role.toUpperCase() : "USER"}</p>
+                      <p className="font-semibold text-gray-700 text-sm">{User.displayName || User.email}</p>
+                      <p className="text-xs text-gray-500">USER</p>
                     </div>
                   </div>
+
                   <Link to="/dashboard" className="block py-2 px-2 rounded-md hover:bg-gray-100">Dashboard</Link>
-                  <button onClick={handleLogout} className="w-full text-left mt-2 py-2 px-2 rounded-md hover:bg-red-50 hover:text-red-600">Logout</button>
+                  <button onClick={handleLogout} className="w-full text-left mt-2 py-2 px-2 rounded-md hover:bg-red-50 hover:text-red-600">
+                    Logout
+                  </button>
                 </div>
               )}
             </div>
@@ -106,10 +106,23 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden bg-white/95 border-t w-full absolute top-full left-0 z-40">
           <div className="w-[90%] mx-auto py-3 flex flex-col gap-3">
-            <Link to="/" className="py-2">Home</Link>
-            <Link to="/all-contests" className="py-2">All Contests</Link>
-            <Link to="/about-us" className="py-2">About Us</Link>
-            <Link to="/leaderboard" className="py-2">Leaderboard</Link>
+
+            <NavLink to="/" onClick={() => setMobileOpen(false)} className="py-2">
+              Home
+            </NavLink>
+
+            <NavLink to="/all-contests" onClick={() => setMobileOpen(false)} className="py-2">
+              All Contests
+            </NavLink>
+
+            <NavLink to="/about-us" onClick={() => setMobileOpen(false)} className="py-2">
+              About Us
+            </NavLink>
+
+            <NavLink to="/leaderboard" onClick={() => setMobileOpen(false)} className="py-2">
+              Leaderboard
+            </NavLink>
+
           </div>
         </div>
       )}

@@ -6,6 +6,8 @@ import Leaderboard from "../Pages/Leaderboard";
 import AboutUs from "../Pages/AboutUs";
 import Login from "../Pages/Authentication/Login.";
 import Register from "../Pages/Authentication/Register";
+import Viewdetels from "../Pages/Viewdetels";
+import Payment from "../Pages/Payment";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +38,14 @@ export const router = createBrowserRouter([
         {
           path:"/register",
           Component:Register
+        },
+        {
+          path:`/contest/:id`,
+          Component:Viewdetels
+        },
+        {
+          path:"/payment/:id",
+          Component:Payment
         }
     ]
   },
