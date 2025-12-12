@@ -1,15 +1,12 @@
-import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
 import Primarybtn from "../../Component/Primarybtn";
 import Useauth from "../../Component/Useauth";
+import { useState } from "react";
 
 const Register = () => {
-
-  const {singinwithgoogle}=Useauth()
-
-
+  const { createaccountbygoogle, createaccountwithemail, updateUserProfileData } = Useauth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -22,28 +19,59 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    Swal.fire({
-      icon: "success",
-      title: "Registration Successful",
-      text: `Welcome ${formData.name}!`,
-      timer: 2000,
-      showConfirmButton: false,
-    });
 
-    setFormData({ name: "", email: "", password: "", photo: "" });
-    console.log(formData);
+    if (formData.password.length < 6) {
+      Swal.fire({
+        icon: "error",
+        title: "Weak Password",
+        text: "Password must be at least 6 characters",
+      });
+      return;
+    }
+
+    try {
+      const userCredential = await createaccountwithemail(
+        formData.email,
+        formData.password,
+        formData.name,
+        formData.photo
+      );
+
+      await updateUserProfileData(userCredential.user, formData.name, formData.photo);
+
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        text: `Welcome ${formData.name}!`,
+      });
+
+      setFormData({ name: "", email: "", password: "", photo: "" });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error.message,
+      });
+    }
   };
 
-  const handleGoogleRegister = () => {
-    singinwithgoogle()
-    Swal.fire({
-      icon: "success",
-      title: "Google Sign-up Success!",
-      timer: 2000,
-      showConfirmButton: false,
-    });
+  const handleGoogleRegister = async () => {
+    try {
+      const result = await createaccountbygoogle();
+      Swal.fire({
+        icon: "success",
+        title: "Google Sign-in Success!",
+        text: `Welcome ${result.user.displayName || result.user.email}!`,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Google Sign-in Failed",
+        text: error.message,
+      });
+    }
   };
 
   return (
@@ -93,11 +121,7 @@ const Register = () => {
             className="p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
-
           <Primarybtn>Register</Primarybtn>
-
-
-
         </form>
 
         <div className="flex items-center my-5">

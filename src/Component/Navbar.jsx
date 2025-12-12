@@ -1,21 +1,57 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink } from "react-router";
 import logo from "../assets/Logo.avif";
 import Primarybtn from "./Primarybtn";
+import Useauth from "./Useauth";
+import Swal from "sweetalert2";
+import { Link, NavLink, useNavigate } from "react-router";
 
-const Navbar = ({ user, onLogout }) => {
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef();
+
+const Navbar = () => {
+  const { User, logout } = Useauth();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const profileRef = useRef();
+  const mobileRef = useRef();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, logout!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout()
+          .then(() => {
+            Swal.fire("Logged out!", "You have been successfully logged out.", "success");
+            navigate("/login");
+          })
+          .catch((error) => {
+            Swal.fire("Error!", error.message, "error");
+          });
+      }
+    });
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+      if (mobileRef.current && !mobileRef.current.contains(e.target)) {
+        setMobileOpen(false);
       }
     };
-    window.addEventListener("click", handleClickOutside);
-    return () => window.removeEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+
+  console.log(User)
 
   return (
     <header className="backdrop-blur-md bg-white/80 sticky top-0 z-50 shadow">
@@ -29,36 +65,35 @@ const Navbar = ({ user, onLogout }) => {
 
         <nav className="hidden md:flex items-center gap-8">
           <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>Home</NavLink>
-          <NavLink to="/allcontest" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>All Contests</NavLink>
+          <NavLink to="/all-contests" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>All Contests</NavLink>
           <NavLink to="/about-us" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>About Us</NavLink>
           <NavLink to="/leaderboard" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>Leaderboard</NavLink>
         </nav>
 
         <div className="flex items-center gap-4">
-          <button onClick={() => setOpen((p) => !p)} className="md:hidden p-2 border rounded-md">
+          <button ref={mobileRef} onClick={() => setMobileOpen(p => !p)} className="md:hidden p-2 border rounded-md">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
 
-          {user ? (
-            <div className="relative" ref={dropdownRef}>
-              <button onClick={() => setOpen((p) => !p)} className="flex items-center gap-3">
-                <img src={user.photo || "/default-user.png"} alt="user" className="w-10 h-10 rounded-full border object-cover" />
+          {User ? (
+            <div className="relative" ref={profileRef}>
+              <button onClick={() => setProfileOpen(p => !p)} className="flex items-center gap-3">
+                <img src={User.photoURL} alt="user" className="w-10 h-10 rounded-full border object-cover" />
               </button>
 
-              {open && (
-                <div className="absolute right-0 mt-3 w-48 bg-white shadow-lg rounded-xl p-3">
+              {profileOpen && (
+                <div className="absolute right-0 mt-3 w-48 bg-white shadow-lg rounded-xl p-3 z-50">
                   <div className="flex items-center gap-3 mb-2">
-                    <img src={user.photo || "/default-user.png"} alt="u" className="w-10 h-10 rounded-full object-cover" />
+                    <img src={User.photoURL} alt="u" className="w-10 h-10 rounded-full object-cover" />
                     <div>
-                      <p className="font-semibold text-gray-700 text-sm">{user.name || user.displayName || user.email}</p>
-                      <p className="text-xs text-gray-500">{user.role ? user.role.toUpperCase() : "USER"}</p>
+                      <p className="font-semibold text-gray-700 text-sm">{User.name || User.displayName || User.email}</p>
+                      <p className="text-xs text-gray-500">{User.role ? User.role.toUpperCase() : "USER"}</p>
                     </div>
                   </div>
-
                   <Link to="/dashboard" className="block py-2 px-2 rounded-md hover:bg-gray-100">Dashboard</Link>
-                  <button onClick={onLogout} className="w-full text-left mt-2 py-2 px-2 rounded-md hover:bg-red-50 hover:text-red-600">Logout</button>
+                  <button onClick={handleLogout} className="w-full text-left mt-2 py-2 px-2 rounded-md hover:bg-red-50 hover:text-red-600">Logout</button>
                 </div>
               )}
             </div>
@@ -68,14 +103,16 @@ const Navbar = ({ user, onLogout }) => {
         </div>
       </div>
 
-      <div className={`${open ? "block" : "hidden"} md:hidden bg-white/95 border-t`}>
-        <div className="w-[90%] mx-auto py-3 flex flex-col gap-3">
-          <Link to="/" className="py-2">Home</Link>
-          <Link to="/allcontest" className="py-2">All Contests</Link>
-          <Link to="/about-us" className="py-2">About Us</Link>
-          <Link to="/leaderboard" className="py-2">Leaderboard</Link>
+      {mobileOpen && (
+        <div className="md:hidden bg-white/95 border-t w-full absolute top-full left-0 z-40">
+          <div className="w-[90%] mx-auto py-3 flex flex-col gap-3">
+            <Link to="/" className="py-2">Home</Link>
+            <Link to="/all-contests" className="py-2">All Contests</Link>
+            <Link to="/about-us" className="py-2">About Us</Link>
+            <Link to="/leaderboard" className="py-2">Leaderboard</Link>
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };

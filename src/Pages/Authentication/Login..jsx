@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
@@ -6,10 +6,7 @@ import Primarybtn from "../../Component/Primarybtn";
 import Useauth from "../../Component/Useauth";
 
 const Login = () => {
-
-  const {singinwithgoogle}=Useauth()
-
-
+  const { createaccountbygoogle, loginaccountbyemail } = Useauth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -22,37 +19,65 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    Swal.fire({
-      icon: "success",
-      title: "Login Successful",
-      text: `Welcome back, ${formData.email}!`,
-      timer: 2000,
-      showConfirmButton: false,
-    });
 
-    console.log(formData);
+    if (!formData.email || !formData.password) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Email and password are required",
+        showConfirmButton: true
+      });
+      return;
+    }
+
+    loginaccountbyemail(formData.email, formData.password)
+      .then((result) => {
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: `Welcome back, ${result.user.email}!`,
+          showConfirmButton: true
+        });
+        setFormData({ email: "", password: "" });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+          showConfirmButton: true
+        });
+      });
   };
 
   const handleGoogleLogin = () => {
-    singinwithgoogle()
-    Swal.fire({
-      icon: "success",
-      title: "Google Sign-in Successful",
-      timer: 2000,
-      showConfirmButton: false,
-    });
+    createaccountbygoogle()
+      .then((result) => {
+        Swal.fire({
+          icon: "success",
+          title: "Google Sign-in Successful",
+          text: `Welcome ${result.user.displayName || result.user.email}!`,
+          showConfirmButton: true
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Google Sign-in Failed",
+          text: error.message,
+          showConfirmButton: true
+        });
+      });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md p-10 bg-white rounded-3xl shadow-xl">
-
         <h1 className="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
           Login to ContestHub
         </h1>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-5">
-          
           <div className="flex flex-col">
             <label className="mb-2 font-semibold text-gray-700">Email</label>
             <input
@@ -80,7 +105,6 @@ const Login = () => {
           </div>
 
           <Primarybtn>Login</Primarybtn>
-
         </form>
 
         <div className="flex items-center my-5">
@@ -103,7 +127,6 @@ const Login = () => {
             Register
           </Link>
         </p>
-
       </div>
     </div>
   );

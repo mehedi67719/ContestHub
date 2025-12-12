@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
             Component:Home
         },
         {
-          path:"/allcontest",
+          path:"/all-contests",
           Component:Allcontest
         },
         {

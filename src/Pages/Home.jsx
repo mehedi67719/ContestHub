@@ -1,6 +1,7 @@
 import React from "react";
 import Primarybtn from "../Component/Primarybtn";
 import contestImage from "../assets/Contest.jpeg";
+import { Link } from "react-router";
 
 const Home = () => {
   const popularContests = [
@@ -53,7 +54,7 @@ const Home = () => {
           ))}
         </div>
         <div className="flex justify-center mt-6">
-          <Primarybtn>Show All Contests</Primarybtn>
+          <Link to='/all-contests'><Primarybtn>Show All Contests</Primarybtn></Link>
         </div>
       </section>
 
