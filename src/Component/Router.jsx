@@ -8,6 +8,7 @@ import Login from "../Pages/Authentication/Login.";
 import Register from "../Pages/Authentication/Register";
 import Viewdetels from "../Pages/Viewdetels";
 import Payment from "../Pages/Payment";
+import Pymentsuccess from "../Pages/Pymentsuccess";
 
 
 export const router = createBrowserRouter([
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
         {
           path:"/payment/:id",
           Component:Payment
+        },
+        {
+          path:"/payment-success",
+          Component:Pymentsuccess
         }
     ]
   },

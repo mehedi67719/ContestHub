@@ -2,40 +2,31 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FaUsers, FaClock } from "react-icons/fa";
 import Primarybtn from "../Component/Primarybtn";
+import { useQuery } from "@tanstack/react-query";
 
 const Allcontest = () => {
   const [activeTab, setActiveTab] = useState("All");
-  const [contests, setContests] = useState([]);
-  const [loading,setloading]=useState(false)
+  
+
 
   const tabs = ["All", "Design", "Article", "Business", "Gaming", "Video Editing"];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setloading(true)
-        const res = await fetch("http://localhost:3000/contests");
-        const data = await res.json();
-        setContests(data);
-      } catch (err) {
-        setloading(true)
-        console.log(err);
-      }
-      finally{
-        setloading(false)
-      }
-    };
-    fetchData();
-  }, []);
 
 
-console.log(contests)
+  const {data:contests=[],isLoading,error}=useQuery({
+    queryKey:["All-contest"],
+    queryFn:async ()=>{
+      const res= await fetch("http://localhost:3000/contests")
+      return res.json()
+    }
+  })
 
-  if(loading){
-    return <p className="text-2xl font-bold text-center ">loading...</p>
-  }
 
-  // console.log(contests)
+if(error){
+  return <p className="text-red-600 font-bold text-center text-2xl">Something went wrong!</p>
+}
+
+ 
 
   const filteredContests =
     activeTab === "All" ? contests : contests.filter((c) => c.contestType === activeTab);
@@ -44,21 +35,26 @@ console.log(contests)
     <div className="max-w-[90%] mx-auto  py-12 space-y-12">
       <h1 className="text-4xl font-bold text-center text-gray-800">All Contests</h1>
 
-      <div className="flex flex-wrap justify-center gap-3 mb-12">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeTab === tab
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-blue-50"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+      {
+        isLoading?(<p className="text-2xl font-bold text-center ">loading...</p>):(
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                    activeTab === tab
+                      ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg"
+                      : "bg-white border border-gray-300 text-gray-700 hover:bg-blue-50"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+      
+        )
+      }
 
       {filteredContests.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-8">
