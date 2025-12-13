@@ -7,8 +7,9 @@ import AboutUs from "../Pages/AboutUs";
 import Login from "../Pages/Authentication/Login.";
 import Register from "../Pages/Authentication/Register";
 import Viewdetels from "../Pages/Viewdetels";
-import Payment from "../Pages/Payment";
-import Pymentsuccess from "../Pages/Pymentsuccess";
+import Payment from "../Pages/Payment/Payment";
+import Pymentsuccess from "../Pages/Payment/Pymentsuccess";
+import Paymentcancle from "../Pages/Payment/Paymentcancle";
 
 
 export const router = createBrowserRouter([
@@ -49,8 +50,12 @@ export const router = createBrowserRouter([
           Component:Payment
         },
         {
-          path:"/payment-success",
+          path:"/payment-success/:id",
           Component:Pymentsuccess
+        },
+        {
+          path:"/payment-cancel/:id",
+          Component:Paymentcancle
         }
     ]
   },

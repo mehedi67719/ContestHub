@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useParams } from 'react-router';
-import Primarybtn from '../Component/Primarybtn';
-import Useauth from '../Component/Useauth';
+import Primarybtn from '../../Component/Primarybtn';
+import Useauth from '../../Component/Useauth';
 import { useQuery } from '@tanstack/react-query';
 
 const Payment = () => {
@@ -44,19 +44,17 @@ const Payment = () => {
         },
         body: JSON.stringify(paymentinfo)
       });
-      
-      
-      
+
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
 
       const session = await res.json();
       console.log("Payment session created:", session);
-      console.log("Stripe Checkout URL:", session.url); 
-      
+      console.log("Stripe Checkout URL:", session.url);
+
       if (session.url) {
-        window.location.href = session.url; 
+        window.location.href = session.url;
       } else {
         throw new Error("Payment URL not received from server.");
       }
