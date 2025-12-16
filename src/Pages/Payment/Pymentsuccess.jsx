@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { Link, useParams, useSearchParams } from 'react-router';
 
@@ -7,17 +7,22 @@ const Pymentsuccess = () => {
     const { id } = useParams();
     const [searchparams] = useSearchParams()
     const session_id = searchparams.get('session_id');
-    console.log(session_id)
+    const [Transaction, setTransaction] = useState();
+    const [tracking, settracking] = useState()
+    // console.log(session_id)
 
 
 
     useEffect(() => {
         if (session_id) {
-            fetch(`http://localhost:3000/payment-success?session_id=${session_id}`,{
-                method:"PATCH",
+            fetch(`http://localhost:3000/payment-success?session_id=${session_id}`, {
+                method: "PATCH",
             })
-            .then(res=>res.json())
-            .then(data=>console.log(data))
+                .then(res => res.json())
+                .then(data => {
+                    setTransaction(data.tranjectionid)
+                    settracking(data.trackingid)
+                })
         }
     }, [session_id])
 
@@ -37,10 +42,13 @@ const Pymentsuccess = () => {
 
                 <div className="bg-green-50 p-4 rounded-lg mb-8 border border-green-200">
                     <p className="text-sm font-medium text-gray-600">
-                        Transaction ID: <span className="font-mono text-gray-700 select-all text-xs">#{id ? id.slice(-8).toUpperCase() : 'N/A'}</span>
+                        Transaction ID: <span className="font-mono text-gray-700 select-all text-xs">{Transaction}</span>
                     </p>
                     <p className="text-sm font-medium text-gray-600 mt-1">
                         Contest ID: <span className="font-mono text-gray-700 text-xs">{id || 'Loading...'}</span>
+                    </p>
+                    <p className="text-sm font-medium text-gray-600 mt-1">
+                        Tracking ID: <span className="font-mono text-gray-700 text-xs">{tracking}</span>
                     </p>
                 </div>
 

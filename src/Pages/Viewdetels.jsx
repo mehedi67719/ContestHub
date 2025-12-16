@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { data, Link, useParams } from 'react-router';
 import Primarybtn from '../Component/Primarybtn';
 import { useQuery } from '@tanstack/react-query';
+import Useauth from '../Component/Useauth';
+import Swal from 'sweetalert2';
 
 const Viewdetels = () => {
     const { id } = useParams();
+    const { User } = Useauth();
     const [timeLeft, setTimeLeft] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [taskLink, setTaskLink] = useState('');
+    const [message, setMessage] = useState('');
 
     const { data: contests = [], isLoading, error } = useQuery({
         queryKey: ["All-contest"],
@@ -44,7 +50,55 @@ const Viewdetels = () => {
     if (!contest) return <p className='text-center text-red-500 text-xl mt-20'>Contest not found</p>;
 
     const isEnded = new Date(contest.deadline) < new Date();
-    const isButtonDisabled = isEnded || contest.paymentstatus === "paid";
+    const isSubmitEnabled = contest.paymentstatus === "paid" && !isEnded;
+
+    const handleOpenModal = () => {
+        if (isSubmitEnabled) {
+            setIsModalOpen(true);
+        }
+    };
+
+    const handleSubmitTask = async () => {
+        if (!taskLink) return;
+
+        const task = {
+            email: User.email,
+            taskLink: taskLink,
+            contest_id: contest._id
+        };
+
+        try {
+            const res = await fetch("http://localhost:3000/tasks", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(task)
+            });
+
+
+
+            if (res.ok) {
+                setMessage("Task submitted successfully!");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Task submitted successfully!',
+
+                })
+                setTaskLink("");
+                setIsModalOpen(false);
+            } else {
+                setMessage("Submission failed.");
+            }
+        } catch (err) {
+            console.log(err);
+            setMessage("Server error!");
+            Swal.fire({
+                icon: 'error',
+                title: 'Server error!',
+            })
+        }
+    };
 
     return (
         <div className="max-w-[90%] mx-auto py-10 space-y-10">
@@ -85,28 +139,55 @@ const Viewdetels = () => {
                     )}
 
                     <div className="flex flex-col md:flex-row gap-4 mt-4">
-                        {isButtonDisabled ? (
+                        {isEnded || contest.paymentstatus === "paid" ? (
                             <Primarybtn className="w-full md:w-auto bg-gray-400 cursor-not-allowed" disabled>
                                 {isEnded ? 'Contest Ended' : 'Already Paid'}
                             </Primarybtn>
                         ) : (
                             <Link to={`/payment/${contest._id}`}>
-                                <Primarybtn className="w-full md:w-auto">
-                                    Register
-                                </Primarybtn>
+                                <Primarybtn className="w-full md:w-auto">Register</Primarybtn>
                             </Link>
                         )}
 
-                        {!isEnded && (
-                            <Link>
-                                <Primarybtn className="w-full md:w-auto" disabled={contest.paymentstatus!=="paid"}>
-                                    Submit Task
-                                </Primarybtn>
-                            </Link>
-                        )}
+                        <Primarybtn
+                            className={`w-full md:w-auto ${!isSubmitEnabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+                            disabled={!isSubmitEnabled}
+                            onClick={handleOpenModal}
+                        >
+                            Submit Task
+                        </Primarybtn>
                     </div>
                 </div>
             </div>
+
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white rounded-2xl p-6 w-11/12 max-w-md mx-auto shadow-lg relative">
+                        <h2 className="text-xl font-semibold mb-4 text-gray-800">Submit Your Task</h2>
+                        <textarea
+                            value={taskLink}
+                            onChange={(e) => setTaskLink(e.target.value)}
+                            placeholder="Paste your task link here..."
+                            className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                        ></textarea>
+                        <div className="flex justify-end mt-4 gap-3">
+                            <button
+                                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition"
+                                onClick={() => setIsModalOpen(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                                onClick={handleSubmitTask}
+                            >
+                                Submit
+                            </button>
+                        </div>
+                        {message && <p className="mt-2 text-green-600">{message}</p>}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
