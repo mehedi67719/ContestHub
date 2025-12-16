@@ -10,6 +10,11 @@ import Viewdetels from "../Pages/Viewdetels";
 import Payment from "../Pages/Payment/Payment";
 import Pymentsuccess from "../Pages/Payment/Pymentsuccess";
 import Paymentcancle from "../Pages/Payment/Paymentcancle";
+import DasboardRoot from "../Pages/dashboard/DasboardRoot";
+import MYprofile from "../Pages/dashboard/MYprofile";
+import User from "../Pages/dashboard/User";
+
+
 
 
 export const router = createBrowserRouter([
@@ -56,6 +61,20 @@ export const router = createBrowserRouter([
         {
           path:"/payment-cancel/:id",
           Component:Paymentcancle
+        },
+        {
+          path:"/dashboard",
+          element:<DasboardRoot/>,
+          children:[
+            {
+              index:true,
+              Component:MYprofile
+            },
+            {
+              path:"/dashboard/user",
+              Component:User
+            }
+          ]
         }
     ]
   },

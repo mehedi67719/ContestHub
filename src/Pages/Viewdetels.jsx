@@ -76,6 +76,7 @@ const Viewdetels = () => {
                 body: JSON.stringify(task)
             });
 
+            const data=await res.json()
 
 
             if (res.ok) {
@@ -88,8 +89,14 @@ const Viewdetels = () => {
                 setTaskLink("");
                 setIsModalOpen(false);
             } else {
-                setMessage("Submission failed.");
+                Swal.fire({
+                    icon:"warning",
+                    title:'Submission Failed',
+                    text:data.message ||  'You may have already submitted this task.'
+                })
             }
+
+
         } catch (err) {
             console.log(err);
             setMessage("Server error!");
