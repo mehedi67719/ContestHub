@@ -12,7 +12,11 @@ import Pymentsuccess from "../Pages/Payment/Pymentsuccess";
 import Paymentcancle from "../Pages/Payment/Paymentcancle";
 import DasboardRoot from "../Pages/dashboard/DasboardRoot";
 import MYprofile from "../Pages/dashboard/MYprofile";
-import User from "../Pages/dashboard/User";
+import Myparticipated from "../Pages/dashboard/Myparticipated";
+import Mywinner from "../Pages/dashboard/Mywinner";
+import Managecontest from "../Pages/dashboard/Managecontest";
+import Manageuser from "../Pages/dashboard/MaNAGEUSER";
+import AdminHome from "../Pages/dashboard/AdminHome";
 
 
 
@@ -70,9 +74,26 @@ export const router = createBrowserRouter([
               index:true,
               Component:MYprofile
             },
+        
             {
-              path:"/dashboard/user",
-              Component:User
+              path:"/dashboard/participated-contests",
+              Component:Myparticipated
+            },
+            {
+              path:"/dashboard/winning-contests",
+              Component:Mywinner
+            },
+            {
+              path:"/dashboard/manage-users",
+              Component:Manageuser
+            },
+            {
+              path:"/dashboard/manage-contests",
+              Component:Managecontest
+            },
+            {
+              path:"/dashboard/admin-home",
+              Component:AdminHome
             }
           ]
         }

@@ -3,15 +3,20 @@ import { FaUser, FaAward, FaListAlt } from 'react-icons/fa';
 import { MdOutlineCreateNewFolder } from 'react-icons/md';
 import { TbGitPullRequestClosed } from 'react-icons/tb';
 import { RiUserSettingsLine, RiAdminLine } from 'react-icons/ri';
-import { MdOutlineSecurity } from 'react-icons/md'; 
+import { MdOutlineSecurity } from 'react-icons/md';
 import { Link } from 'react-router';
 import Useauth from '../../Component/Useauth';
+import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
+
+
+
 
 
 const userNavItems = [
     { to: '/dashboard', icon: FaUser, label: 'My Profile' },
     { to: '/dashboard/participated-contests', icon: FaListAlt, label: 'My Participated' },
     { to: '/dashboard/winning-contests', icon: FaAward, label: 'My Winnings' },
+    { to: '/dashboard/', icon: VscGitPullRequestGoToChanges, label: "Request Contest Creator " }
 ];
 
 const creatorNavItems = [
@@ -31,13 +36,13 @@ const adminNavItems = [
 
 const SidebarItem = ({ to, icon: Icon, label }) => {
     return (
-        <Link 
-            to={to} 
+        <Link
+            to={to}
             className="flex items-center p-3 my-2 text-white rounded-lg hover:bg-teal-600 transition-all duration-300 group relative"
         >
             <Icon className="w-6 h-6 z-10" />
 
-            <span 
+            <span
                 className="absolute left-full ml-3 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-300 shadow-xl pointer-events-none z-20"
             >
                 {label}
@@ -47,11 +52,15 @@ const SidebarItem = ({ to, icon: Icon, label }) => {
 };
 
 
-const Dashboard = ({ role = 'admin' }) => {
 
 
 
- 
+const Dashboard = () => {
+
+
+    const { User } = Useauth()
+    const role = User?.role || "admin";
+
 
     let navItems = [];
 
@@ -67,7 +76,7 @@ const Dashboard = ({ role = 'admin' }) => {
         <div className='w-16 md:w-20 lg:w-20 min-h-screen bg-gray-900 shadow-2xl p-2'>
             <nav className='flex flex-col items-center pt-8'>
                 {navItems.map((item) => (
-                    <SidebarItem 
+                    <SidebarItem
                         key={item.label}
                         to={item.to}
                         icon={item.icon}

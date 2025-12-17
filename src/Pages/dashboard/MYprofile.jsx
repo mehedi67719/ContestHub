@@ -9,7 +9,7 @@ const MYprofile = () => {
     const participatedContests = 15;
     const wonContests = 4;
     const winPercentage = participatedContests > 0 ? ((wonContests / participatedContests) * 100).toFixed(1) : 0;
-    const userRole = 'Creator'; 
+    
 
     return (
         <div className="py-12 space-y-12 w-full">
@@ -31,7 +31,7 @@ const MYprofile = () => {
                                 className="w-32 h-32 rounded-full object-cover ring-4 ring-blue-500 ring-offset-4 ring-offset-white"
                             />
                             <span className="absolute bottom-0 right-0 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                                {userRole}
+                                {User?.status|| "Normal User "}
                             </span>
                         </div>
                         
