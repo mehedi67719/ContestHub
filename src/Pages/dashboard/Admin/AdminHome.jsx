@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import Useauth from '../../Component/Useauth';
+import Useauth from '../../../Component/Useauth';
 import { FaCheckCircle, FaTimesCircle, FaTrophy, FaUsers, FaChartBar } from 'react-icons/fa';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { MdOutlinePending } from 'react-icons/md';

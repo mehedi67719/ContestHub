@@ -1,5 +1,5 @@
 import React from 'react';
-import Useauth from '../../Component/Useauth';
+import Useauth from '../../../Component/Useauth';
 import { useQuery } from '@tanstack/react-query';
 
 const Myparticipated = () => {

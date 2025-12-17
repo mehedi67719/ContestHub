@@ -7,6 +7,7 @@ import { MdOutlineSecurity } from 'react-icons/md';
 import { Link } from 'react-router';
 import Useauth from '../../Component/Useauth';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
+import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 
 
 
@@ -31,6 +32,7 @@ const adminNavItems = [
     { to: '/dashboard/manage-users', icon: RiUserSettingsLine, label: 'Manage Users' },
     { to: '/dashboard/manage-contests', icon: MdOutlineSecurity, label: 'Manage Contests' },
     { to: '/dashboard', icon: FaUser, label: 'My Profile' },
+    { to: '/dashboard/userrequest', icon: AiOutlineUsergroupAdd, label: 'User request' },
 ];
 
 
@@ -59,7 +61,7 @@ const Dashboard = () => {
 
 
     const { User } = Useauth()
-    const role = User?.role || "normal";
+    const role = User?.role || "admin";
 
 
     let navItems = [];
