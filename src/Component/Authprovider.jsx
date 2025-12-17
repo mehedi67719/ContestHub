@@ -27,30 +27,35 @@ const Authprovider = ({ children }) => {
   // console.log(User)
 
 
-  useEffect(()=>{
-    const datapost=async()=>{
+  useEffect(() => {
+    const datapost = async () => {
+      if (!User || !User.email) return;
 
-    
-    try{
-      const res=await fetch("http://localhost:3000/user",{
-        method:"POST",
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(User)
-      })
-      
+      try {
+        const res = await fetch("http://localhost:3000/user", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: User.displayName,
+            email: User.email,
+            image: User.photoURL,
+           
+          })
+        });
+        const data = await res.json();
+        console.log("User saved successfully", data);
+      } catch (err) {
+        console.log("Error posting user:", err);
+      }
     }
-    catch(err){
-      console.log(err)
-    }
-  }
 
-  datapost()
-  },[User])
+    datapost();
+  }, [User]);
 
 
-  
+
 
   const createaccountbygoogle = () => {
     return signInWithPopup(auth, provider);
@@ -78,7 +83,7 @@ const Authprovider = ({ children }) => {
 
 
 
-  const logout=()=>{
+  const logout = () => {
     return signOut(auth)
   }
 
@@ -89,13 +94,13 @@ const Authprovider = ({ children }) => {
     loginaccountbyemail,
     updateUserProfileData,
     logout
-    
-    
+
+
   };
 
   return <Authcontext value={authinfo}>
     {children}
-    </Authcontext>;
+  </Authcontext>;
 };
 
 export default Authprovider;

@@ -40,19 +40,26 @@ const Payment = () => {
 
   const isEnded = new Date(contest.deadline) < new Date();
   const platformFee = 10;
-  const totalFee = contest.entryFee + platformFee;
+  const entryFee = contest?.entryFee
+  console.log(typeof (entryFee))
+  const totalFee = entryFee + platformFee
 
+
+  const paymentinfo = {
+    cost: totalFee,
+    name: contest.name,
+    email: User?.email,
+    id: contest?._id,
+  }
+
+
+  console.log(paymentinfo)
   const handelpayment = async () => {
     try {
       const res = await fetch('http://localhost:3000/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cost: totalFee,
-          name: contest.name,
-          email: User?.email,
-          id: contest._id,
-        }),
+        body: JSON.stringify(paymentinfo),
       });
 
       if (!res.ok) {
@@ -117,9 +124,8 @@ const Payment = () => {
       <Primarybtn
         onClick={handelpayment}
         disabled={isEnded}
-        className={`mt-6 w-full ${
-          isEnded && 'bg-gray-400 cursor-not-allowed'
-        }`}
+        className={`mt-6 w-full ${isEnded && 'bg-gray-400 cursor-not-allowed'
+          }`}
       >
         {isEnded ? 'Contest Ended' : 'Pay Now'}
       </Primarybtn>

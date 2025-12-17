@@ -15,9 +15,7 @@ const Pymentsuccess = () => {
 
     useEffect(() => {
         if (session_id) {
-            fetch(`http://localhost:3000/payment-success?session_id=${session_id}`, {
-                method: "PATCH",
-            })
+            fetch(`http://localhost:3000/payment-success?session_id=${session_id}`)
                 .then(res => res.json())
                 .then(data => {
                     setTransaction(data.tranjectionid)

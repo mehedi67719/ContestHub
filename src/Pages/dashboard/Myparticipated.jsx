@@ -9,22 +9,22 @@ const Myparticipated = () => {
         data: Contests = [],
         isLoading: participatedLoading
     } = useQuery({
-        queryKey: ['participated', User?.email],
+        queryKey: ['paymenthistory', User?.email],
         enabled: !!User?.email,
         queryFn: () =>
-            fetch(`http://localhost:3000/participated?email=${User.email}`)
+            fetch(`http://localhost:3000/payment?email=${User.email}`)
                 .then(res => res.json())
     });
 
-   
 
-    if (participatedLoading ) {
+
+    if (participatedLoading) {
         return <p className="text-center mt-10">Loading...</p>;
     }
 
 
 
-    
+
     return (
         <div className="w-full overflow-x-auto">
             <table className="w-full border-collapse min-w-[900px]">
@@ -54,7 +54,7 @@ const Myparticipated = () => {
                             <td className="px-4 py-3 uppercase">{item.currency}</td>
                             <td className="px-4 py-3">
                                 <span className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">
-                                    {item.paymentstatus}
+                                    {item.payment_status}
                                 </span>
                             </td>
                             <td className="px-4 py-3">

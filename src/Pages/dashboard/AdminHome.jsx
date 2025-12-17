@@ -38,7 +38,7 @@ const AdminHome = () => {
 
     return (
         <div className="p-4 md:p-10 bg-gray-50/50 min-h-screen w-full font-sans">
-            {/* Admin Profile Header - Matches Navbar/Card Style */}
+          
             <div className="flex flex-col md:flex-row items-center justify-between bg-white p-8 rounded-[2rem] shadow-lg mb-10 border border-gray-100 gap-6">
                 <div className="flex flex-col md:flex-row items-center gap-6">
                     <div className="relative">
@@ -66,7 +66,7 @@ const AdminHome = () => {
                 </div>
             </div>
 
-            {/* Stats Grid - Matches Filter Buttons/Card Badges */}
+       
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 
                 <div className="bg-gradient-to-br from-blue-600 to-purple-700 p-8 rounded-[2rem] shadow-xl hover:shadow-blue-200 transition-all duration-300 group relative overflow-hidden">
@@ -114,7 +114,6 @@ const AdminHome = () => {
                 </div>
             </div>
 
-            {/* Analytics & Action Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-lg border border-gray-100">
                     <div className="flex items-center justify-between mb-10">

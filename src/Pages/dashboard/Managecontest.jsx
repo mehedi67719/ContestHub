@@ -18,7 +18,6 @@ const Managecontest = () => {
         if (res.ok) {
             refetch();
             Swal.fire({
-                position: "top-end",
                 icon: "success",
                 title: `Contest ${status}ed`,
                 showConfirmButton: false,
@@ -33,6 +32,12 @@ const Managecontest = () => {
                 <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
             </div>
         );
+    }
+
+
+
+    const handledelete=()=>{
+
     }
 
     return (
@@ -98,7 +103,7 @@ const Managecontest = () => {
                                             >
                                                 <FaTimes size={14} />
                                             </button>
-                                            <button className="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm">
+                                            <button onClick={()=>handledelete(contest._id)} className="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm">
                                                 <FaTrash size={14} />
                                             </button>
                                         </div>

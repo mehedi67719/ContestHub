@@ -16,7 +16,7 @@ const userNavItems = [
     { to: '/dashboard', icon: FaUser, label: 'My Profile' },
     { to: '/dashboard/participated-contests', icon: FaListAlt, label: 'My Participated' },
     { to: '/dashboard/winning-contests', icon: FaAward, label: 'My Winnings' },
-    { to: '/dashboard/', icon: VscGitPullRequestGoToChanges, label: "Request Contest Creator " }
+    { to: '/dashboard/normaluserrequest', icon: VscGitPullRequestGoToChanges, label: "Request Contest Creator " }
 ];
 
 const creatorNavItems = [
@@ -59,7 +59,7 @@ const Dashboard = () => {
 
 
     const { User } = Useauth()
-    const role = User?.role || "admin";
+    const role = User?.role || "normal";
 
 
     let navItems = [];

@@ -17,6 +17,7 @@ import Mywinner from "../Pages/dashboard/Mywinner";
 import Managecontest from "../Pages/dashboard/Managecontest";
 import Manageuser from "../Pages/dashboard/MaNAGEUSER";
 import AdminHome from "../Pages/dashboard/AdminHome";
+import Normaluserrequest from "../Pages/dashboard/Normaluserrequest";
 
 
 
@@ -94,6 +95,10 @@ export const router = createBrowserRouter([
             {
               path:"/dashboard/admin-home",
               Component:AdminHome
+            },
+            {
+              path:"/dashboard/normaluserrequest",
+              Component:Normaluserrequest
             }
           ]
         }

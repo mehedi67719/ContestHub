@@ -21,6 +21,7 @@ const Viewdetels = () => {
         }
     });
 
+
     useEffect(() => {
         const interval = setInterval(() => {
             const contest = contests.find(d => d._id === id);
@@ -43,14 +44,46 @@ const Viewdetels = () => {
         return () => clearInterval(interval);
     }, [contests, id]);
 
+
+
+    const { data: paymenthistory = [], isLoading: participatedLoading } = useQuery({
+        queryKey: ['paymenthistory', User?.email],
+        enabled: !!User?.email,
+        queryFn: () =>
+            fetch(`http://localhost:3000/payment?email=${User.email}`)
+                .then(res => res.json())
+    });
+
+
+
+    if (participatedLoading) {
+        return <p className="text-center mt-10">Loading...</p>;
+    }
+
+
+
+
     if (isLoading) return <p className='text-2xl font-bold text-center mt-20'>Loading...</p>;
     if (error) return <p className='text-2xl text-red-600 font-bold text-center'>Something went wrong!</p>;
 
     const contest = contests.find(d => d._id === id);
     if (!contest) return <p className='text-center text-red-500 text-xl mt-20'>Contest not found</p>;
 
+
+
     const isEnded = new Date(contest.deadline) < new Date();
-    const isSubmitEnabled = contest.paymentstatus === "paid" && !isEnded;
+
+
+
+
+
+    const filterpayment = paymenthistory.find(p => p.contest_id ==contest._id )
+
+    // console.log(filterpayment)
+
+   
+
+    const isSubmitEnabled = filterpayment?.payment_status === "paid" && !isEnded;
 
     const handleOpenModal = () => {
         if (isSubmitEnabled) {
@@ -76,7 +109,7 @@ const Viewdetels = () => {
                 body: JSON.stringify(task)
             });
 
-            const data=await res.json()
+            const data = await res.json()
 
 
             if (res.ok) {
@@ -90,9 +123,9 @@ const Viewdetels = () => {
                 setIsModalOpen(false);
             } else {
                 Swal.fire({
-                    icon:"warning",
-                    title:'Submission Failed',
-                    text:data.message ||  'You may have already submitted this task.'
+                    icon: "warning",
+                    title: 'Submission Failed',
+                    text: data.message || 'You may have already submitted this task.'
                 })
             }
 
@@ -146,7 +179,7 @@ const Viewdetels = () => {
                     )}
 
                     <div className="flex flex-col md:flex-row gap-4 mt-4">
-                        {isEnded || contest.paymentstatus === "paid" ? (
+                        {isEnded || filterpayment?.payment_status === "paid" ? (
                             <Primarybtn className="w-full md:w-auto bg-gray-400 cursor-not-allowed" disabled>
                                 {isEnded ? 'Contest Ended' : 'Already Paid'}
                             </Primarybtn>
