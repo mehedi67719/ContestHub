@@ -8,6 +8,7 @@ import { Link } from 'react-router';
 import Useauth from '../../Component/Useauth';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { useQuery } from '@tanstack/react-query';
 
 
 
@@ -25,6 +26,9 @@ const creatorNavItems = [
     { to: '/dashboard/add-contest', icon: MdOutlineCreateNewFolder, label: 'Add Contest' },
     { to: '/dashboard/my-contests', icon: FaListAlt, label: 'My Created Contests' },
     { to: '/dashboard/submitted-tasks', icon: TbGitPullRequestClosed, label: 'Submissions' },
+    { to: '/dashboard/normaluserrequest', icon: VscGitPullRequestGoToChanges, label: "Request Contest Creator " },
+    { to: '/dashboard/participated-contests', icon: FaListAlt, label: 'My Participated' },
+    { to: '/dashboard/winning-contests', icon: FaAward, label: 'My Winnings' },
 ];
 
 const adminNavItems = [
@@ -32,11 +36,16 @@ const adminNavItems = [
     { to: '/dashboard/manage-users', icon: RiUserSettingsLine, label: 'Manage Users' },
     { to: '/dashboard/manage-contests', icon: MdOutlineSecurity, label: 'Manage Contests' },
     { to: '/dashboard', icon: FaUser, label: 'My Profile' },
-    { to: '/dashboard/userrequest', icon: AiOutlineUsergroupAdd, label: 'User request' },
+    { to: '/dashboard/admin-userrequest', icon: AiOutlineUsergroupAdd, label: 'User request' },
+    { to: '/dashboard/participated-contests', icon: FaListAlt, label: 'My Participated' },
+    { to: '/dashboard/winning-contests', icon: FaAward, label: 'My Winnings' },
 ];
 
 
 const SidebarItem = ({ to, icon: Icon, label }) => {
+
+
+
     return (
         <Link
             to={to}
@@ -57,11 +66,32 @@ const SidebarItem = ({ to, icon: Icon, label }) => {
 
 
 
+
+
 const Dashboard = () => {
 
-
     const { User } = Useauth()
-    const role = User?.role || "admin";
+
+
+    const { isLoading, error, data: users = [] } = useQuery({
+        queryKey: ['role-user'],
+        queryFn: async () => {
+            const res = await fetch('http://localhost:3000/user');
+            return res.json();
+        },
+    });
+
+    if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+    if (error) return <p className="text-center mt-10">Error: {error.message}</p>;
+
+
+    const user = users?.find(u => u.email == User?.email);
+
+    // console.log(user)
+
+
+
+    const role = user?.role || "user";
 
 
     let navItems = [];
@@ -75,7 +105,7 @@ const Dashboard = () => {
     }
 
     return (
-        <div className='w-16 md:w-20 lg:w-20 min-h-screen bg-gray-900 shadow-2xl p-2'>
+        <div className='w-10 md:w-15 lg:w-20 min-h-screen  bg-gray-900 shadow-2xl  p-2 '>
             <nav className='flex flex-col items-center pt-8'>
                 {navItems.map((item) => (
                     <SidebarItem

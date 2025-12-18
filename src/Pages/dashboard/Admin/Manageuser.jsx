@@ -13,20 +13,24 @@ const Manageuser = () => {
                 .then(res => res.json())
     });
 
-    const handleRoleChange = async (userId, newRole) => {
+    const handleRoleChange = async (role, useremail) => {
+        // console.log(role, useremail)
         try {
-            const res = await fetch(`http://localhost:3000/user/${userId}/role`, {
-                method: 'PATCH',
+            const res = await fetch('http://localhost:3000/user-request', {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ role: newRole })
+                body: JSON.stringify({
+                    useremail,
+                    role
+                }),
             });
-            
-            if(res.ok) {
+
+            if (res.ok) {
                 queryClient.invalidateQueries(['ManageUser']);
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: `Role updated to ${newRole}`,
+                    title: `Role updated to ${role}`,
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -93,11 +97,10 @@ const Manageuser = () => {
                                     </td>
 
                                     <td className="px-4 md:px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 py-0.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-tighter md:tracking-widest ${
-                                            user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                                            user.role === 'creator' ? 'bg-blue-100 text-blue-700' :
-                                            'bg-gray-100 text-gray-600'
-                                        }`}>
+                                        <span className={`px-2 py-0.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-tighter md:tracking-widest ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
+                                                user.role === 'creator' ? 'bg-blue-100 text-blue-700' :
+                                                    'bg-gray-100 text-gray-600'
+                                            }`}>
                                             {user.role || "User"}
                                         </span>
                                     </td>
@@ -105,21 +108,21 @@ const Manageuser = () => {
                                     <td className="px-4 md:px-6 py-4 whitespace-nowrap">
                                         <div className="flex justify-center gap-1 md:gap-2">
                                             <button
-                                                onClick={() => handleRoleChange(user._id, 'admin')}
+                                                onClick={() => handleRoleChange('admin', user.email)}
                                                 disabled={user.role === 'admin'}
                                                 className={`p-1.5 md:p-2 rounded-lg transition-all ${user.role === 'admin' ? 'text-gray-200' : 'bg-green-50 text-green-600 hover:bg-green-600 hover:text-white'}`}
                                             >
                                                 <FaUserShield size={16} />
                                             </button>
                                             <button
-                                                onClick={() => handleRoleChange(user._id, 'creator')}
+                                                onClick={() => handleRoleChange('creator', user.email)}
                                                 disabled={user.role === 'creator'}
                                                 className={`p-1.5 md:p-2 rounded-lg transition-all ${user.role === 'creator' ? 'text-gray-200' : 'bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white'}`}
                                             >
                                                 <FaUserEdit size={16} />
                                             </button>
                                             <button
-                                                onClick={() => handleRoleChange(user._id, 'user')}
+                                                onClick={() => handleRoleChange('user', user.email)}
                                                 disabled={!user.role || user.role === 'user'}
                                                 className={`p-1.5 md:p-2 rounded-lg transition-all ${(!user.role || user.role === 'user') ? 'text-gray-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white'}`}
                                             >

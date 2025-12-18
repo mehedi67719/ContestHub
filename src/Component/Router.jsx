@@ -15,10 +15,13 @@ import MYprofile from "../Pages/dashboard/MYprofile";
 import Manageuser from "../Pages/dashboard/Admin/Manageuser";
 import Managecontest from "../Pages/dashboard/Admin/Managecontest";
 import AdminHome from "../Pages/dashboard/Admin/AdminHome";
-import Userrequest from "../Pages/dashboard/Admin/Userrequest";
-import Myparticipated from "../Pages/dashboard/Normaluser/Myparticipated";
-import Mywinner from "../Pages/dashboard/Normaluser/Mywinner";
 import NormalUserRequest from "../Pages/dashboard/Normaluser/Normaluserrequest";
+import Userrequest from "../Pages/dashboard/Admin/Userrequest";
+import Myparticipated from "../Pages/dashboard/Myparticipated";
+import Mywinner from "../Pages/dashboard/Mywinner";
+import Addcontest from "../Pages/dashboard/ContestCreator/Addcontest";
+import Mycreatedcontext from "../Pages/dashboard/ContestCreator/Mycreatedcontext";
+import MycontestSubmittask from "../Pages/dashboard/ContestCreator/MycontestSubmittask";
 
 
 
@@ -102,9 +105,22 @@ export const router = createBrowserRouter([
             Component: AdminHome
           },
           {
-            path: "/dashboard/userrequest",
+            path: "/dashboard/admin-userrequest",
             Component: Userrequest
           },
+          {
+            path:"/dashboard/add-contest",
+            Component:Addcontest
+          },
+          {
+            path:"/dashboard/my-contests",
+            Component:Mycreatedcontext
+          },
+          {
+            path:"/dashboard/submitted-tasks",
+            Component:MycontestSubmittask
+          }
+        
 
         ]
       }
