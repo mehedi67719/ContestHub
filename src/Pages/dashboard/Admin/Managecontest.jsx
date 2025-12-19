@@ -23,6 +23,7 @@ const Managecontest = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
+            
         }
     };
 

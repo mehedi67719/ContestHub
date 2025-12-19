@@ -77,7 +77,7 @@ if(error){
               <div className="p-6 flex flex-col flex-grow justify-between">
                 <div className="space-y-2">
                   <h2 className="text-2xl font-bold text-gray-800">{contest.name}</h2>
-                  <p className="text-gray-600 text-sm">{contest.description.slice(0, 80)}...</p>
+                  <p className="text-gray-600 text-sm">{contest.description?.slice(0, 80)}...</p>
                   <div className="flex items-center justify-between mt-2 text-gray-700 text-sm">
                     <div className="flex items-center gap-1">
                       <FaUsers className="text-blue-600" />

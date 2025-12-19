@@ -95,7 +95,7 @@ const Viewdetels = () => {
         if (!taskLink) return;
 
         const task = {
-            email: User.email,
+            user_email : User.email,
             taskLink: taskLink,
             contest_id: contest._id
         };

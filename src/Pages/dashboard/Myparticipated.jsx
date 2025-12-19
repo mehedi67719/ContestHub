@@ -26,7 +26,7 @@ const Myparticipated = () => {
 
 
     return (
-        <div className="w-full overflow-x-auto">
+        <div className="w-full my-10 overflow-x-auto">
             <table className="w-full border-collapse min-w-[900px]">
                 <thead className="bg-blue-600 text-white">
                     <tr>
