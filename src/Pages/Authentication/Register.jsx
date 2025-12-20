@@ -1,5 +1,5 @@
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import Primarybtn from "../../Component/Primarybtn";
 import Useauth from "../../Component/Useauth";
@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const Register = () => {
   const { createaccountbygoogle, createaccountwithemail, updateUserProfileData } = Useauth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -48,6 +49,7 @@ const Register = () => {
       });
 
       setFormData({ name: "", email: "", password: "", photo: "" });
+      navigate("/", { replace: true });
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -65,6 +67,7 @@ const Register = () => {
         title: "Google Sign-in Success!",
         text: `Welcome ${result.user.displayName || result.user.email}!`,
       });
+      navigate("/", { replace: true });
     } catch (error) {
       Swal.fire({
         icon: "error",

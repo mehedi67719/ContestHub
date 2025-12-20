@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="flex flex-col gap-4 md:w-1/3">
           <div className="flex items-center gap-3">
             <img src={logo} alt="logo" className="w-12 h-12 rounded-md object-cover" />
-            <span className="text-3xl font-bold tracking-wide">ContestHub</span>
+            <span className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">ContestHub</span>
           </div>
           <p className="text-gray-600 text-sm md:text-base">
             ContestHub is your ultimate platform to create, participate, and manage creative contests.

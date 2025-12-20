@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import Primarybtn from "../../Component/Primarybtn";
 import Useauth from "../../Component/Useauth";
 
 const Login = () => {
   const { createaccountbygoogle, loginaccountbyemail } = Useauth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -39,6 +42,7 @@ const Login = () => {
           showConfirmButton: true
         });
         setFormData({ email: "", password: "" });
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         Swal.fire({
@@ -59,6 +63,7 @@ const Login = () => {
           text: `Welcome ${result.user.displayName || result.user.email}!`,
           showConfirmButton: true
         });
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         Swal.fire({

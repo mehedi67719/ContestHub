@@ -23,6 +23,7 @@ import Addcontest from "../Pages/dashboard/ContestCreator/Addcontest";
 import Mycreatedcontext from "../Pages/dashboard/ContestCreator/Mycreatedcontext";
 import MycontestSubmittask from "../Pages/dashboard/ContestCreator/MycontestSubmittask";
 import Updateprofile from "../Pages/dashboard/Updateprofile";
+import PrivateRoute from "./PrivateRouter";
 
 
 
@@ -74,7 +75,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <DasboardRoot />,
+        element: <PrivateRoute><DasboardRoot /></PrivateRoute>,
         children: [
           {
             index: true,

@@ -131,7 +131,7 @@ const Home = () => {
           <p className="mb-4 text-purple-700">
             Join our contests and you could be the next big winner. Amazing prizes and recognition await!
           </p>
-          <Primarybtn>Join Now</Primarybtn>
+          <Link to="/all-contests"><Primarybtn>Join Now</Primarybtn></Link>
         </div>
         <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4">
           {winners.map((winner) => (
@@ -153,7 +153,9 @@ const Home = () => {
         <p className="text-gray-600 mb-4">
           Explore a variety of contests, showcase your skills, and win prizes. Stay updated with trending contests and discover new opportunities.
         </p>
-        <Primarybtn>Explore Contests</Primarybtn>
+        <Link to="/all-contests">
+          <Primarybtn>Explore Contests</Primarybtn>
+        </Link>
       </section>
     </div>
   );
