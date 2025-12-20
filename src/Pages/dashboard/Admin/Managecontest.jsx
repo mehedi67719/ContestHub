@@ -23,7 +23,7 @@ const Managecontest = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
-            
+
         }
     };
 
@@ -37,8 +37,29 @@ const Managecontest = () => {
 
 
 
-    const handledelete=()=>{
-
+    const handledelete = async (id) => {
+        console.log(id)
+        try {
+            const res = await fetch(`http://localhost:3000/contests/${id}`, {
+                method: "DELETE"
+            })
+            if (res.ok) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "The contest has been deleted.",
+                    icon: "success"
+                })
+                refetch()
+            }
+        }
+        catch (err) {
+            console.log(err)
+            Swal.fire({
+                title: "Error",
+                text: "The contest was not deleted.",
+                icon: "error"
+            })
+        }
     }
 
     return (
@@ -80,31 +101,30 @@ const Managecontest = () => {
                                         <div className="text-purple-600 font-bold">Prize: ${contest.prizeMoney}</div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full border whitespace-nowrap ${
-                                            contest.status === 'approve' ? 'bg-green-50 text-green-700 border-green-200' :
-                                            contest.status === 'reject' ? 'bg-red-50 text-red-700 border-red-200' : 
-                                            'bg-amber-50 text-amber-700 border-amber-200'
-                                        }`}>
+                                        <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full border whitespace-nowrap ${contest.status === 'approve' ? 'bg-green-50 text-green-700 border-green-200' :
+                                            contest.status === 'reject' ? 'bg-red-50 text-red-700 border-red-200' :
+                                                'bg-amber-50 text-amber-700 border-amber-200'
+                                            }`}>
                                             {contest.status || "Pending"}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex justify-center gap-2">
-                                            <button 
+                                            <button
                                                 onClick={() => handleStatus(contest._id, 'approve')}
                                                 disabled={contest.status === 'approve'}
                                                 className={`p-2 rounded-lg transition-all shadow-sm ${contest.status === 'approve' ? 'bg-gray-100 text-gray-300' : 'bg-green-50 text-green-600 hover:bg-green-600 hover:text-white'}`}
                                             >
                                                 <FaCheck size={14} />
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => handleStatus(contest._id, 'reject')}
                                                 disabled={contest.status === 'reject'}
                                                 className={`p-2 rounded-lg transition-all shadow-sm ${contest.status === 'reject' ? 'bg-gray-100 text-gray-300' : 'bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white'}`}
                                             >
                                                 <FaTimes size={14} />
                                             </button>
-                                            <button onClick={()=>handledelete(contest._id)} className="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm">
+                                            <button onClick={() => handledelete(contest._id)} className="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm">
                                                 <FaTrash size={14} />
                                             </button>
                                         </div>

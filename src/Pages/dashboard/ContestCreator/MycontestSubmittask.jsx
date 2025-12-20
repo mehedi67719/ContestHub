@@ -98,7 +98,8 @@ const MycontestSubmittask = () => {
                         taskId: task._id,
                         contestname: contest.name,
                         winnerEmail: task.user_email || task.email,
-                        price: contest.prizeMoney
+                        price: contest.prizeMoney,
+                        
                       })}
                       disabled={winnerExists || !deadlinePassed}
                       className={`px-3 py-1 rounded-full ${winnerExists || !deadlinePassed ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-green-500 text-white hover:bg-green-600"}`}

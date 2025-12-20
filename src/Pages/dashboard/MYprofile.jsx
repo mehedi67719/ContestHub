@@ -3,6 +3,7 @@ import Useauth from '../../Component/Useauth';
 import { FaEdit, FaTrophy, FaUserCheck } from 'react-icons/fa';
 import Primarybtn from '../../Component/Primarybtn';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router';
 
 const MYprofile = () => {
     const { User } = Useauth();
@@ -31,6 +32,21 @@ const MYprofile = () => {
 
 
 
+    const { isLoading: loading, error: err, data: win = [] } = useQuery({
+        queryKey: ['win', User?.email],
+        enabled: !!User?.email,
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:3000/win/${User.email}`);
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json();
+        },
+    });
+
+
+
+
     if (participatedLoading) {
         return <p className="text-center mt-10">Loading...</p>;
     }
@@ -38,12 +54,12 @@ const MYprofile = () => {
 
 
 
-    if (isLoading) {
+    if (isLoading || loading) {
         return <p className='text-2xl text-gray-600 text-center'>Loading...</p>
     }
 
 
-    if (error) {
+    if (error || err) {
         return <p className='text-red-500 text-center '>{error}</p>
     }
 
@@ -51,11 +67,10 @@ const MYprofile = () => {
     const realuser = users?.find(u => u.email == User?.email);
 
 
-    //   console.log(realuser)
-    // console.log(Contests)
 
-    const participatedContests =Contests.length;
-    const wonContests = 1;
+
+    const participatedContests = Contests.length;
+    const wonContests = win.length;
     const winPercentage = participatedContests > 0 ? ((wonContests / participatedContests) * 100).toFixed(1) : 0;
 
 
@@ -86,9 +101,11 @@ const MYprofile = () => {
                         <h2 className="text-2xl font-extrabold text-gray-800 mb-1">{User?.displayName || 'ContestHub User'}</h2>
                         <p className="text-sm text-gray-600 mb-6">{User?.email || 'user@example.com'}</p>
 
-                        <Primarybtn className="flex justify-center">
-                            <FaEdit className="mr-2" />
-                            Update Profile
+                        <Primarybtn >
+                            <Link to="/dashboard/updateprofile" className="flex justify-center">
+                                <FaEdit className="mr-2" />
+                                Update Profile
+                            </Link>
                         </Primarybtn>
                     </div>
 

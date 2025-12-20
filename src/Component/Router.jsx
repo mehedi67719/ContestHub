@@ -22,6 +22,7 @@ import Mywinner from "../Pages/dashboard/Mywinner";
 import Addcontest from "../Pages/dashboard/ContestCreator/Addcontest";
 import Mycreatedcontext from "../Pages/dashboard/ContestCreator/Mycreatedcontext";
 import MycontestSubmittask from "../Pages/dashboard/ContestCreator/MycontestSubmittask";
+import Updateprofile from "../Pages/dashboard/Updateprofile";
 
 
 
@@ -119,6 +120,10 @@ export const router = createBrowserRouter([
           {
             path:"/dashboard/submitted-tasks",
             Component:MycontestSubmittask
+          },
+          {
+            path:"/dashboard/updateprofile",
+            Component:Updateprofile
           }
         
 

@@ -38,10 +38,15 @@ const Authprovider = ({ children }) => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
+            uid: User.uid,
             name: User.displayName,
             email: User.email,
+            emailVerified: User.emailVerified,
+            phone: User.phoneNumber,
             image: User.photoURL,
-           
+            isAnonymous: User.isAnonymous,
+            metadata: User.metadata,
+            providerData: User.providerData,
           })
         });
         const data = await res.json();
