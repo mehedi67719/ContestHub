@@ -1,55 +1,107 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import 'react-datepicker/dist/react-datepicker.css';
 import Primarybtn from '../../../Component/Primarybtn';
 import Swal from 'sweetalert2';
 import Useauth from '../../../Component/Useauth';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router';
 
-const Addcontest = () => {
+const Editcontest = () => {
+    const { User } = Useauth();
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-    const {User}=Useauth()
-    const { register, handleSubmit, setValue,reset, watch, formState: { errors } } = useForm();
-    const deadline = watch("deadline");
-    const onSubmit = async (data) => {
-        data.entryFee = data.price; 
-        data.creatorEmail = User.email;
-        data.participantsCount = 0;
-        data.winnerId = null;
-        data.createdAt = new Date().toISOString();
-        data.paymentstatus = "none";
-        data.status = "pending";
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
+    const deadline = watch('deadline');
+
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['single-contest', id],
+        enabled: !!id,
+        queryFn: async () => {
+            const res = await fetch(`http://localhost:3000/contests/${id}`);
+            return res.json();
+        }
+    });
+
+    useEffect(() => {
+        if (data) {
+            setValue('name', data.name);
+            setValue('image', data.image);
+            setValue('description', data.description);
+            setValue('price', data.price || data.entryFee);
+            setValue('prizeMoney', data.prizeMoney);
+            setValue('taskInstruction', data.taskInstruction);
+            setValue('contestType', data.contestType);
+            setValue('deadline', new Date(data.deadline));
+        }
+    }, [data, setValue]);
+
+    const onSubmit = async (formData) => {
+        const updatedContest = {
+            name: formData.name,
+            image: formData.image,
+            description: formData.description,
+            entryFee: Number(formData.price), // price field এর value entryFee ও price এ পাঠানো হচ্ছে
+            price: Number(formData.price),
+            prizeMoney: Number(formData.prizeMoney),
+            taskInstruction: formData.taskInstruction,
+            contestType: formData.contestType,
+            deadline: formData.deadline
+        };
 
         try {
-            const res = await fetch("http://localhost:3000/All-contests", {
-                method: "POST",
+            const res = await fetch(`http://localhost:3000/contests/${id}`, {
+                method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(updatedContest)
             });
 
-            if (res.ok) {
+            const result = await res.json();
+            if (result.modifiedCount > 0) {
                 Swal.fire({
-                    icon: "success",
-                    title: `Contest Added`,
-                    showConfirmButton: false,
-                    timer: 1500
+                    icon: 'success',
+                    title: 'Updated!',
+                    text: 'Contest updated successfully',
+                    timer: 1500,
+                    showConfirmButton: false
                 });
-                reset();
+                queryClient.invalidateQueries(['single-contest', id]);
+                navigate('/dashboard/mycreatedcontest');
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'No Changes',
+                    text: 'No updates were made',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             }
         } catch (err) {
-            console.log(err);
-            Swal.fire("Error!", "Something went wrong.", "error");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Something went wrong',
+                timer: 1500,
+                showConfirmButton: false
+            });
+            console.error(err);
         }
     };
 
+    if (error) return <div className="min-h-screen flex items-center justify-center text-red-600 font-bold text-2xl">Something went wrong!</div>;
+    if (isLoading) return <div className="min-h-screen flex items-center justify-center text-2xl font-semibold text-blue-600 animate-pulse">Loading ....</div>;
+
     return (
-        <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex justify-center py-12">
+        <div className="w-full min-h-screen  flex justify-center py-12">
             <div className="w-full mx-2 lg:mx-8 md:mx-5 bg-white rounded-3xl border border-gray-200 shadow-2xl p-8 md:p-12">
                 <h2 className="text-3xl font-extrabold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    Create New Contest
+                    Update Your Contest
                 </h2>
                 <p className="text-center text-gray-500 mb-10">
-                    Add a new creative contest and inspire participants
+                    Edit your contest details and update information
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -85,7 +137,7 @@ const Addcontest = () => {
                     </div>
 
                     <div>
-                        <label className="font-semibold text-gray-700">Entry Fee</label>
+                        <label className="font-semibold text-gray-700">Price / Entry Fee</label>
                         <input
                             type="number"
                             {...register("price", { required: true })}
@@ -146,7 +198,7 @@ const Addcontest = () => {
 
                     <div className="md:col-span-2 mt-6">
                         <Primarybtn type="submit" className="w-full shadow-lg">
-                            Add Contest
+                            Update Contest
                         </Primarybtn>
                     </div>
 
@@ -156,4 +208,4 @@ const Addcontest = () => {
     );
 };
 
-export default Addcontest;
+export default Editcontest;

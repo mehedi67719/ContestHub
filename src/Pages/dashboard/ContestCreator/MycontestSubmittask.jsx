@@ -11,13 +11,13 @@ const MycontestSubmittask = () => {
     queryKey: ["My-contests", User?.email],
     enabled: !!User?.email,
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/contests/${User.email}`);
+      const res = await fetch(`http://localhost:3000/contests/user/${User.email}`);
       return res.json();
     }
   });
 
   const { data: tasks = [], isLoading: loading, error: err } = useQuery({
-    queryKey: ["All-contest"],
+    queryKey: ["all-tasks"],
     queryFn: async () => {
       const res = await fetch("http://localhost:3000/task");
       return res.json();

@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 
 const MYprofile = () => {
-    const { User } = Useauth();
+    const { User} = Useauth();
 
 
     const { isLoading, error, data: users = [] } = useQuery({
@@ -32,7 +32,7 @@ const MYprofile = () => {
 
 
 
-    const { isLoading: loading, error: err, data: win = [] } = useQuery({
+    const { isLoading: loadingwin, error: err, data: win = [] } = useQuery({
         queryKey: ['win', User?.email],
         enabled: !!User?.email,
         queryFn: async () => {
@@ -54,7 +54,7 @@ const MYprofile = () => {
 
 
 
-    if (isLoading || loading) {
+    if (isLoading || loadingwin ) {
         return <p className='text-2xl text-gray-600 text-center'>Loading...</p>
     }
 

@@ -24,6 +24,8 @@ import Mycreatedcontext from "../Pages/dashboard/ContestCreator/Mycreatedcontext
 import MycontestSubmittask from "../Pages/dashboard/ContestCreator/MycontestSubmittask";
 import Updateprofile from "../Pages/dashboard/Updateprofile";
 import PrivateRoute from "./PrivateRouter";
+import Editcontest from "../Pages/dashboard/ContestCreator/Editcontest";
+import SeeSingleContestTasks from "../Pages/dashboard/ContestCreator/SeeSingleContestTasks";
 
 
 
@@ -59,7 +61,7 @@ export const router = createBrowserRouter([
       },
       {
         path: `/contest/:id`,
-        Component: Viewdetels
+        element:<PrivateRoute><Viewdetels/></PrivateRoute>
       },
       {
         path: "/payment/:id",
@@ -125,6 +127,14 @@ export const router = createBrowserRouter([
           {
             path:"/dashboard/updateprofile",
             Component:Updateprofile
+          },
+          {
+            path:"/dashboard/editcontest/:id",
+            Component:Editcontest
+          },
+          {
+            path:"/dashboard/See-single-contest-task/:id",
+            Component:SeeSingleContestTasks
           }
         
 

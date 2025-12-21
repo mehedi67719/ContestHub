@@ -56,14 +56,27 @@ const Viewdetels = () => {
 
 
 
-    if (participatedLoading) {
+    const isEnded = new Date(contest.deadline) < new Date();
+
+
+    if (isEnded) {
+        const { data: win = [], isLoading: winloading } = useQuery({
+            queryKey: ['contest-win'],
+            queryFn: () =>
+                fetch(`http://localhost:3000/win/contest/${id}`)
+                    .then(res => res.json())
+        });
+    }
+
+
+    if (participatedLoading ||winloading ) {
         return <p className="text-center mt-10">Loading...</p>;
     }
 
 
 
 
-    if (isLoading) return <p className='text-2xl font-bold text-center mt-20'>Loading...</p>;
+    if (isLoading ) return <p className='text-2xl font-bold text-center mt-20'>Loading...</p>;
     if (error) return <p className='text-2xl text-red-600 font-bold text-center'>Something went wrong!</p>;
 
     const contest = contests.find(d => d._id === id);
@@ -71,17 +84,17 @@ const Viewdetels = () => {
 
 
 
-    const isEnded = new Date(contest.deadline) < new Date();
 
 
 
 
 
-    const filterpayment = paymenthistory.find(p => p.contest_id ==contest._id )
 
-    // console.log(filterpayment)
+    const filterpayment = paymenthistory.find(p => p.contest_id == contest._id)
 
-   
+    console.log(win)
+
+
 
     const isSubmitEnabled = filterpayment?.payment_status === "paid" && !isEnded;
 
@@ -95,7 +108,7 @@ const Viewdetels = () => {
         if (!taskLink) return;
 
         const task = {
-            user_email : User.email,
+            user_email: User.email,
             taskLink: taskLink,
             contest_id: contest._id
         };

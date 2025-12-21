@@ -14,17 +14,21 @@ import {
 const Authprovider = ({ children }) => {
   const provider = new GoogleAuthProvider();
   const [User, setUser] = useState(null);
+  const [loading,setloading]=useState(true)
 
   useEffect(() => {
+   
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+       setloading(false)
     });
 
     return () => unsubscribe();
+   
   }, []);
 
 
-  // console.log(User)
+
 
 
   useEffect(() => {
@@ -98,10 +102,14 @@ const Authprovider = ({ children }) => {
     createaccountwithemail,
     loginaccountbyemail,
     updateUserProfileData,
-    logout
+    logout,
+    loading
 
 
   };
+
+
+
 
   return <Authcontext value={authinfo}>
     {children}
