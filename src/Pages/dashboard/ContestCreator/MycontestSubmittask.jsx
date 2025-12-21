@@ -32,28 +32,20 @@ const MycontestSubmittask = () => {
     }
   });
 
-  const markWinner = async ({ taskId, contestname, winnerEmail, price }) => {
+  const markWinner = async ({ taskId, contestname, winnerEmail, price, contestId }) => {
     try {
       const res = await fetch("http://localhost:3000/win", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ taskId, contestname, winnerEmail, price }),
+        body: JSON.stringify({ taskId, contestname, winnerEmail, price, contestId }),
       });
-      if (!res.ok) throw new Error("Failed to mark winner");
-      Swal.fire({
-        icon: 'success',
-        title: 'Winner marked!',
-        showConfirmButton: false,
-        timer: 1500
-      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to mark winner");
+      Swal.fire({ icon: 'success', title: 'Winner marked!', showConfirmButton: false, timer: 1500 });
       queryClient.invalidateQueries(["My-contests"]);
       queryClient.invalidateQueries(["Win"]);
     } catch (err) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: err.message,
-      });
+      Swal.fire({ icon: 'error', title: 'Error!', text: err.message });
     }
   };
 
@@ -83,8 +75,7 @@ const MycontestSubmittask = () => {
             {filtertask.map(task => {
               const contest = contests.find(c => c._id === task.contest_id);
               const deadlinePassed = contest ? isDeadlinePassed(contest.deadline) : false;
-
-             
+              const contestWinner = windata.find(w => w.contestId === task.contest_id);
               const winnerExists = windata.some(w => w.taskId === task._id);
 
               return (
@@ -99,14 +90,12 @@ const MycontestSubmittask = () => {
                         contestname: contest.name,
                         winnerEmail: task.user_email || task.email,
                         price: contest.prizeMoney,
-                        
+                        contestId: contest._id
                       })}
-                      disabled={winnerExists || !deadlinePassed}
-                      className={`px-3 py-1 rounded-full ${winnerExists || !deadlinePassed ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-green-500 text-white hover:bg-green-600"}`}
+                      disabled={!!contestWinner || !deadlinePassed}
+                      className={`px-3 py-1 rounded-full ${winnerExists ? "bg-green-500 text-white" : contestWinner ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
                     >
-                      {
-                        winnerExists?"winned":"Mark Win"
-                      }
+                      {winnerExists ? "Winned" : contestWinner ? "Win" : "Mark Win"}
                     </button>
                   </td>
                 </tr>

@@ -94,6 +94,7 @@ const Navbar = () => {
           <NavLink to="/all-contests" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>All Contests</NavLink>
           <NavLink to="/about-us" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>About Us</NavLink>
           <NavLink to="/leaderboard" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>Leaderboard</NavLink>
+          <NavLink to="/contact-us" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>Contact Us</NavLink>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -154,6 +155,9 @@ const Navbar = () => {
 
             <NavLink to="/leaderboard" onClick={() => setMobileOpen(false)} className="py-2">
               Leaderboard
+            </NavLink>
+            <NavLink to="/contact-us" onClick={() => setMobileOpen(false)} className="py-2">
+              Contact Us
             </NavLink>
 
           </div>

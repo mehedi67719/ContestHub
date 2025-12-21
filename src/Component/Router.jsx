@@ -26,6 +26,8 @@ import Updateprofile from "../Pages/dashboard/Updateprofile";
 import PrivateRoute from "./PrivateRouter";
 import Editcontest from "../Pages/dashboard/ContestCreator/Editcontest";
 import SeeSingleContestTasks from "../Pages/dashboard/ContestCreator/SeeSingleContestTasks";
+import NotFound from "../Pages/NotFound";
+import ContactUs from "../Pages/ContactUs";
 
 
 
@@ -74,6 +76,10 @@ export const router = createBrowserRouter([
       {
         path: "/payment-cancel/:id",
         Component: Paymentcancle
+      },
+      {
+        path:"/contact-us",
+        Component:ContactUs
       },
       {
         path: "/dashboard",
@@ -139,6 +145,10 @@ export const router = createBrowserRouter([
         
 
         ]
+      },
+      {
+        path:"*",
+        Component:NotFound
       }
     ]
   },
