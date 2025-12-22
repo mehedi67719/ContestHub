@@ -53,7 +53,7 @@ All private routes are secured with **JWT**, and the platform includes **role-ba
 
 ## 📸 Screenshot
 
-![ContestHub Screenshot](https://your-image-link.com/screenshot.jpg)
+<img src="https://raw.githubusercontent.com/mehedi67719/assets/618f09e01884ecdf367c3466f3509cd0b7a3e299/Screenshot%202025-12-22%20134357.png" alt="Demo Image" />
 
 ---
 
