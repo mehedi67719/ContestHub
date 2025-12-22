@@ -6,11 +6,11 @@ import Swal from 'sweetalert2';
 const Managecontest = () => {
     const { data: all_contests = [], isLoading, refetch } = useQuery({
         queryKey: ['ManageContest'],
-        queryFn: () => fetch("http://localhost:3000/All-contests").then(res => res.json())
+        queryFn: () => fetch("https://contesthub-server-pink.vercel.app/All-contests").then(res => res.json())
     });
 
     const handleStatus = async (id, status) => {
-        const res = await fetch(`http://localhost:3000/contest-status/${id}`, {
+        const res = await fetch(`https://contesthub-server-pink.vercel.app/contest-status/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status })
@@ -40,7 +40,7 @@ const Managecontest = () => {
     const handledelete = async (id) => {
         console.log(id)
         try {
-            const res = await fetch(`http://localhost:3000/contests/${id}`, {
+            const res = await fetch(`https://contesthub-server-pink.vercel.app/contests/${id}`, {
                 method: "DELETE"
             })
             if (res.ok) {

@@ -24,7 +24,7 @@ const NormalUserRequest = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:3000/user-request', {
+      const res = await fetch('https://contesthub-server-pink.vercel.app/user-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestData)

@@ -13,7 +13,7 @@ const Payment = () => {
   const { data: contests = [], isLoading, error } = useQuery({
     queryKey: ['All-contest'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:3000/contests');
+      const res = await fetch('https://contesthub-server-pink.vercel.app/contests');
       if (!res.ok) throw new Error('Fetch failed');
       return res.json();
     },
@@ -56,7 +56,7 @@ const Payment = () => {
   console.log(paymentinfo)
   const handelpayment = async () => {
     try {
-      const res = await fetch('http://localhost:3000/create-checkout-session', {
+      const res = await fetch('https://contesthub-server-pink.vercel.app/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paymentinfo),

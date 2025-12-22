@@ -20,7 +20,7 @@ const Editcontest = () => {
     queryKey: ['single-contest', id],
     enabled: !!id,
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/contests/${id}`);
+      const res = await fetch(`https://contesthub-server-pink.vercel.app/contests/${id}`);
       return res.json();
     }
   });
@@ -52,7 +52,7 @@ const Editcontest = () => {
     };
 
     try {
-      const res = await fetch(`http://localhost:3000/contests/${id}`, {
+      const res = await fetch(`https://contesthub-server-pink.vercel.app/contests/${id}`, {
         method: 'PATCH',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(updatedContest)

@@ -11,7 +11,7 @@ const MycontestSubmittask = () => {
     queryKey: ["My-contests", User?.email],
     enabled: !!User?.email,
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/contests/user/${User.email}`);
+      const res = await fetch(`https://contesthub-server-pink.vercel.app/contests/user/${User.email}`);
       return res.json();
     }
   });
@@ -19,7 +19,7 @@ const MycontestSubmittask = () => {
   const { data: tasks = [], isLoading: loading, error: err } = useQuery({
     queryKey: ["all-tasks"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/task");
+      const res = await fetch("https://contesthub-server-pink.vercel.app/task");
       return res.json();
     }
   });
@@ -27,14 +27,14 @@ const MycontestSubmittask = () => {
   const { data: windata = [], isLoading: winloading, error: winerr } = useQuery({
     queryKey: ["Win"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/win");
+      const res = await fetch("https://contesthub-server-pink.vercel.app/win");
       return res.json();
     }
   });
 
   const markWinner = async ({ taskId, contestname, winnerEmail, price, contestId }) => {
     try {
-      const res = await fetch("http://localhost:3000/win", {
+      const res = await fetch("https://contesthub-server-pink.vercel.app/win", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ taskId, contestname, winnerEmail, price, contestId }),

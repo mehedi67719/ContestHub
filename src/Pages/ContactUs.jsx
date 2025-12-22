@@ -19,7 +19,7 @@ const ContactUs = () => {
               <FaEnvelope className="text-blue-600 text-2xl mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-800">Email</h3>
-                <p className="text-gray-600">support@contesthub.com</p>
+                <p className="text-gray-600">meh67719@gmail.com</p>
               </div>
             </div>
 
@@ -27,7 +27,7 @@ const ContactUs = () => {
               <FaPhone className="text-green-600 text-2xl mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-800">Phone</h3>
-                <p className="text-gray-600">+880 1234 567890</p>
+                <p className="text-gray-600">+880 1747737704</p>
               </div>
             </div>
 
@@ -43,7 +43,7 @@ const ContactUs = () => {
               <FaGlobe className="text-purple-600 text-2xl mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-800">Website</h3>
-                <p className="text-gray-600">www.contesthub.com</p>
+                <p className="text-gray-600"><a href="https://profound-rugelach-d9e61f.netlify.app/">Portfolio</a></p>
               </div>
             </div>
 

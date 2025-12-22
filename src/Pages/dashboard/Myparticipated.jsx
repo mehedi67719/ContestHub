@@ -12,7 +12,7 @@ const Myparticipated = () => {
         queryKey: ['paymenthistory', User?.email],
         enabled: !!User?.email,
         queryFn: () =>
-            fetch(`http://localhost:3000/payment?email=${User.email}`)
+            fetch(`https://contesthub-server-pink.vercel.app/payment?email=${User.email}`)
                 .then(res => res.json())
     });
 

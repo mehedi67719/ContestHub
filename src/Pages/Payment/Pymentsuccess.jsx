@@ -15,7 +15,7 @@ const Pymentsuccess = () => {
 
     useEffect(() => {
         if (session_id) {
-            fetch(`http://localhost:3000/payment-success?session_id=${session_id}`)
+            fetch(`https://contesthub-server-pink.vercel.app/payment-success?session_id=${session_id}`)
                 .then(res => res.json())
                 .then(data => {
                     setTransaction(data.tranjectionid)

@@ -9,7 +9,7 @@ const Userrequest = () => {
   const { isLoading, error, data: users = [] } = useQuery({
     queryKey: ['role-user'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:3000/user');
+      const res = await fetch('https://contesthub-server-pink.vercel.app/user');
       return res.json();
     },
   });
@@ -23,7 +23,7 @@ const Userrequest = () => {
     else return;
 
     try {
-      const res = await fetch('http://localhost:3000/user-request', {
+      const res = await fetch('https://contesthub-server-pink.vercel.app/user-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

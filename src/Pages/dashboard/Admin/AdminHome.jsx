@@ -12,7 +12,7 @@ const AdminHome = () => {
     const { data: all_contests = [], isLoading } = useQuery({
         queryKey: ['ManageContest'],
         queryFn: () =>
-            fetch("http://localhost:3000/All-contests")
+            fetch("https://contesthub-server-pink.vercel.app/All-contests")
                 .then(res => res.json())
     });
 

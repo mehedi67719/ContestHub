@@ -9,14 +9,14 @@ const Manageuser = () => {
     const { data: users = [], isLoading } = useQuery({
         queryKey: ['ManageUser'],
         queryFn: () =>
-            fetch("http://localhost:3000/user")
+            fetch("https://contesthub-server-pink.vercel.app/user")
                 .then(res => res.json())
     });
 
     const handleRoleChange = async (role, useremail) => {
         // console.log(role, useremail)
         try {
-            const res = await fetch('http://localhost:3000/user-request', {
+            const res = await fetch('https://contesthub-server-pink.vercel.app/user-request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

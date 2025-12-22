@@ -15,7 +15,7 @@ const Mycreatedcontext = () => {
         queryKey: ['My-contests', User?.email],
         enabled: !!User?.email,
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/contests/user/${User.email}`);
+            const res = await fetch(`https://contesthub-server-pink.vercel.app/contests/user/${User.email}`);
             return res.json();
         }
     });
@@ -42,7 +42,7 @@ const Mycreatedcontext = () => {
 
     const handledelete = async (id) => {
         try {
-            const res = await fetch(`http://localhost:3000/contests/${id}`, {
+            const res = await fetch(`https://contesthub-server-pink.vercel.app/contests/${id}`, {
                 method: "DELETE"
             });
             if (res.ok) {

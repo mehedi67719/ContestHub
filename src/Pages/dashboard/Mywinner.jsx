@@ -10,7 +10,7 @@ const Mywinner = () => {
         queryKey: ['win', User?.email],
         enabled: !!User?.email,
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/win/${User.email}`);
+            const res = await fetch(`https://contesthub-server-pink.vercel.app/win/${User.email}`);
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }

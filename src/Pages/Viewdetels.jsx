@@ -16,19 +16,19 @@ const Viewdetels = () => {
 
     const { data: contests = [], isLoading, error } = useQuery({
         queryKey: ["All-contest"],
-        queryFn: async () => fetch("http://localhost:3000/contests").then(res => res.json())
+        queryFn: async () => fetch("https://contesthub-server-pink.vercel.app/contests").then(res => res.json())
     });
 
     const { data: users = [], isLoading: userLoading } = useQuery({
         queryKey: ['ManageUser'],
         queryFn: () =>
-          fetch("http://localhost:3000/user").then(res => res.json())
+          fetch("https://contesthub-server-pink.vercel.app/user").then(res => res.json())
     });
 
     const { data: paymenthistory = [], isLoading: participatedLoading } = useQuery({
         queryKey: ['paymenthistory', User?.email],
         enabled: !!User?.email,
-        queryFn: () => fetch(`http://localhost:3000/payment?email=${User.email}`).then(res => res.json())
+        queryFn: () => fetch(`https://contesthub-server-pink.vercel.app/payment?email=${User.email}`).then(res => res.json())
     });
 
     const contest = contests.find(d => d._id === id);
@@ -36,7 +36,7 @@ const Viewdetels = () => {
 
     const { data: win = [], isLoading: winloading } = useQuery({
         queryKey: ['contest-win', id],
-        queryFn: () => fetch(`http://localhost:3000/win/contest/${id}`).then(res => res.json()),
+        queryFn: () => fetch(`https://contesthub-server-pink.vercel.app/win/contest/${id}`).then(res => res.json()),
         enabled:  isEnded
     });
 
@@ -70,7 +70,7 @@ const Viewdetels = () => {
         if (!taskLink) return;
         const task = { user_email: User.email, taskLink, contest_id: contest._id };
         try {
-            const res = await fetch("http://localhost:3000/tasks", {
+            const res = await fetch("https://contesthub-server-pink.vercel.app/tasks", {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(task)

@@ -37,19 +37,14 @@ const Navbar = () => {
     });
   };
 
-
   const { isLoading, error, data: users = [] } = useQuery({
     queryKey: ['role-user'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:3000/user');
+      const res = await fetch('https://contesthub-server-pink.vercel.app/user');
+      if (!res.ok) throw new Error("Failed to fetch users");
       return res.json();
     },
   });
-
-
-
-
-
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -61,23 +56,15 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
-
-  const realuser = users?.find(u => u.email == User?.email);
-
-  // console.log(realuser)
-
-
+  const realuser = users?.find(u => u.email === User?.email);
 
   if (isLoading) {
     return <p className='text-2xl text-gray-600 text-center'>Loading...</p>
   }
 
-
   if (error) {
-    return <p className='text-red-500 text-center '>{error}</p>
+    return <p className='text-red-500 text-center'>{error?.message || "Something went wrong"}</p>
   }
-
 
   return (
     <header className="backdrop-blur-md bg-white/80 sticky top-0 z-50 shadow">
@@ -120,7 +107,7 @@ const Navbar = () => {
                     <img src={User.photoURL} alt="u" className="w-10 h-10 rounded-full object-cover" />
                     <div>
                       <p className="font-semibold text-gray-700 text-sm">{User.displayName || User.email}</p>
-                      <p className="text-xs text-gray-500">{realuser?.role|| "Local User"}</p>
+                      <p className="text-xs text-gray-500">{realuser?.role || "Local User"}</p>
                     </div>
                   </div>
 

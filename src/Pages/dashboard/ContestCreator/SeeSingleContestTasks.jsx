@@ -10,7 +10,7 @@ const SeeSingleContestTasks = () => {
   const { data: tasks = [], isLoading, error } = useQuery({
     queryKey: ["single-tasks", id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/task/${id}`);
+      const res = await fetch(`https://contesthub-server-pink.vercel.app/task/${id}`);
       return res.json();
     },
   });
@@ -18,7 +18,7 @@ const SeeSingleContestTasks = () => {
   const { data: contestData = {}, isLoading: contestLoading } = useQuery({
     queryKey: ["single-contest", id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/contests/${id}`);
+      const res = await fetch(`https://contesthub-server-pink.vercel.app/contests/${id}`);
       return res.json();
     },
     enabled: !!id,
@@ -27,14 +27,14 @@ const SeeSingleContestTasks = () => {
   const { data: windata = [], isLoading: winloading } = useQuery({
     queryKey: ["Win"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/win");
+      const res = await fetch("https://contesthub-server-pink.vercel.app/win");
       return res.json();
     },
   });
 
   const markWinner = async ({ taskId, winnerEmail, price, contestId }) => {
     try {
-      const res = await fetch("http://localhost:3000/win", {
+      const res = await fetch("https://contesthub-server-pink.vercel.app/win", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ taskId, contestname: contestData.name, winnerEmail, price, contestId }),

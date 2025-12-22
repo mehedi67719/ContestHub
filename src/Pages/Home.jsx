@@ -1,29 +1,73 @@
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router";
 import Primarybtn from "../Component/Primarybtn";
 import contestImage from "../assets/Contest.jpeg";
-import { Link } from "react-router";
 import { FaUsers } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
+import Useauth from "../Component/Useauth";
 
 const Home = () => {
+  const { User } = Useauth();
+
   const { data: contests = [], isLoading, error } = useQuery({
     queryKey: ["contests"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/top-contests");
-      if (!res.ok) {
-        throw new Error("Failed to fetch contests");
-      }
+      const res = await fetch("https://contesthub-server-pink.vercel.app/top-contests");
+      if (!res.ok) throw new Error("Failed to fetch contests");
       return res.json();
     },
   });
 
-  const winners = [
-    { id: 1, name: "Alice Johnson", prize: "$500", image: contestImage },
-    { id: 2, name: "Bob Smith", prize: "$300", image: contestImage },
-    { id: 3, name: "Catherine Lee", prize: "$250", image: contestImage },
-  ];
+  const { data: users = [], isLoading: userLoading } = useQuery({
+    queryKey: ['ManageUser'],
+    queryFn: async () => {
+      const res = await fetch("https://contesthub-server-pink.vercel.app/user");
+      return res.json();
+    },
+  });
+
+  const { data: win = [], isLoading: winLoading } = useQuery({
+    queryKey: ["leader-board"],
+    queryFn: async () => {
+      const res = await fetch("https://contesthub-server-pink.vercel.app/win-leaderboard");
+      if (!res.ok) throw new Error("Network response was not ok");
+      return res.json();
+    },
+  });
+
+  const { data: participateContests = [], isLoading: participatedLoading } =
+    useQuery({
+      queryKey: ["paymenthistory", win],
+      enabled: win.length > 0,
+      queryFn: async () => {
+        let allPayments = [];
+        for (let user of win) {
+          const res = await fetch(
+            `https://contesthub-server-pink.vercel.app/payment?email=${user._id}`
+          );
+          const data = await res.json();
+          allPayments.push(...data);
+        }
+        return allPayments;
+      },
+    });
+
+  const loading = isLoading || userLoading || winLoading || participatedLoading;
+
+  const sortedWin = [...win].sort((a, b) => {
+    const aParticipated = participateContests.filter(
+      p => p.Customer_email === a._id
+    ).length;
+    const bParticipated = participateContests.filter(
+      p => p.Customer_email === b._id
+    ).length;
+    const aWinRate = aParticipated ? a.totalWins / aParticipated : 0;
+    const bWinRate = bParticipated ? b.totalWins / bParticipated : 0;
+    return bWinRate - aWinRate;
+  });
 
   return (
     <div className="w-[90%] mx-auto py-10 space-y-16">
+
       <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl p-10 flex flex-col md:flex-row items-center gap-6">
         <div className="flex-1 space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold">
@@ -53,15 +97,8 @@ const Home = () => {
       <section>
         <h2 className="text-3xl font-bold mb-6 text-gray-800">Popular Contests</h2>
 
-        {isLoading && (
-          <p className="text-2xl font-bold text-black text-center">Loading...</p>
-        )}
-
-        {error && (
-          <p className="text-2xl font-bold text-red-500 text-center">
-            Something went wrong! {error.message}
-          </p>
-        )}
+        {isLoading && <p className="text-2xl font-bold text-black text-center">Loading...</p>}
+        {error && <p className="text-2xl font-bold text-red-500 text-center">{error?.message || "Something went wrong"}</p>}
 
         {!isLoading && !error && (
           <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -84,16 +121,14 @@ const Home = () => {
                 <div className="p-6 flex flex-col flex-grow justify-between">
                   <div className="space-y-2">
                     <h2 className="text-2xl font-bold text-gray-800">{contest.name}</h2>
-                    <p className="text-gray-600 text-sm">
-                      {contest.description?.slice(0, 80)}...
-                    </p>
+                    <p className="text-gray-600 text-sm">{contest.description?.slice(0, 80)}...</p>
                     <div className="flex items-center justify-between mt-2 text-gray-700 text-sm">
                       <div className="flex items-center gap-1">
                         <FaUsers className="text-blue-600" />
                         <span>{contest.participantsCount}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        Deadline: {new Date(contest.deadline).toLocaleDateString()}
+                        Deadline: {contest.deadline ? new Date(contest.deadline).toLocaleDateString() : "N/A"}
                       </div>
                     </div>
                     <div className="flex items-center justify-between mt-2">
@@ -115,36 +150,40 @@ const Home = () => {
             ))}
           </div>
         )}
-
-        <div className="flex justify-center mt-6">
-          <Link to="/all-contests">
-            <Primarybtn>Show All Contests</Primarybtn>
-          </Link>
-        </div>
       </section>
 
       <section className="bg-purple-100 rounded-xl p-10 flex flex-col md:flex-row items-center gap-6">
         <div className="flex-1">
           <h2 className="text-3xl font-bold mb-4 text-purple-800">
-            Congratulations to Our Winners!
+            Congratulations to Our Recent Winners!
           </h2>
           <p className="mb-4 text-purple-700">
-            Join our contests and you could be the next big winner. Amazing prizes and recognition await!
+            Participate in our contests and you could be the next big winner. Amazing prizes and recognition await!
           </p>
           <Link to="/all-contests"><Primarybtn>Join Now</Primarybtn></Link>
         </div>
+
         <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {winners.map((winner) => (
-            <div key={winner.id} className="bg-white rounded-xl shadow p-3 text-center">
-              <img
-                src={winner.image}
-                alt={winner.name}
-                className="rounded-full w-20 h-20 mx-auto mb-2 object-cover"
-              />
-              <h4 className="font-semibold text-gray-800">{winner.name}</h4>
-              <p className="text-gray-500">{winner.prize}</p>
-            </div>
-          ))}
+          {loading && <p className="text-center col-span-3">Loading winners...</p>}
+          {!loading && sortedWin.length === 0 && <p className="text-center col-span-3">No winners yet.</p>}
+          {!loading && sortedWin.slice(0,3).map((user) => {
+            const userParticipatedCount = participateContests.filter(
+              p => p.Customer_email === user._id
+            ).length;
+            const userInfo = users.find(u => u.email === user._id);
+            const prize = "$" + (user.totalWins * 100);
+            return (
+              <div key={user._id} className="bg-white rounded-xl shadow p-3 text-center">
+                <img
+                  src={userInfo?.photoURL || userInfo?.image || contestImage}
+                  alt={userInfo?.displayName || "Winner"}
+                  className="rounded-full w-20 h-20 mx-auto mb-2 object-cover"
+                />
+                <h4 className="font-semibold text-gray-800">{userInfo?.displayName || userInfo?.name || "No Name"}</h4>
+                <p className="text-gray-500">{prize}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -157,6 +196,7 @@ const Home = () => {
           <Primarybtn>Explore Contests</Primarybtn>
         </Link>
       </section>
+
     </div>
   );
 };

@@ -12,7 +12,7 @@ const MYprofile = () => {
     const { isLoading, error, data: users = [] } = useQuery({
         queryKey: ['role-user'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:3000/user');
+            const res = await fetch('https://contesthub-server-pink.vercel.app/user');
             return res.json();
         },
     });
@@ -26,7 +26,7 @@ const MYprofile = () => {
         queryKey: ['paymenthistory', User?.email],
         enabled: !!User?.email,
         queryFn: () =>
-            fetch(`http://localhost:3000/payment?email=${User.email}`)
+            fetch(`https://contesthub-server-pink.vercel.app/payment?email=${User.email}`)
                 .then(res => res.json())
     });
 
@@ -36,7 +36,7 @@ const MYprofile = () => {
         queryKey: ['win', User?.email],
         enabled: !!User?.email,
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/win/${User.email}`);
+            const res = await fetch(`https://contesthub-server-pink.vercel.app/win/${User.email}`);
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }

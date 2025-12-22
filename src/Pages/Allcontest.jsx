@@ -16,7 +16,7 @@ const Allcontest = () => {
   const {data:contests=[],isLoading,error}=useQuery({
     queryKey:["All-contest"],
     queryFn:async ()=>{
-      const res= await fetch("http://localhost:3000/contests")
+      const res= await fetch("https://contesthub-server-pink.vercel.app/contests")
       return res.json()
     }
   })

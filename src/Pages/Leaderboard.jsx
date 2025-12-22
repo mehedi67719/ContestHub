@@ -8,13 +8,13 @@ const Leaderboard = () => {
   const { data: users = [], isLoading: userLoading } = useQuery({
     queryKey: ['ManageUser'],
     queryFn: () =>
-      fetch("http://localhost:3000/user").then(res => res.json())
+      fetch("https://contesthub-server-pink.vercel.app/user").then(res => res.json())
   });
 
   const { isLoading, data: win = [] } = useQuery({
     queryKey: ["leader-board"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/win-leaderboard");
+      const res = await fetch("https://contesthub-server-pink.vercel.app/win-leaderboard");
       if (!res.ok) throw new Error("Network response was not ok");
       return res.json();
     },
@@ -28,7 +28,7 @@ const Leaderboard = () => {
         let allPayments = [];
         for (let user of win) {
           const res = await fetch(
-            `http://localhost:3000/payment?email=${user._id}`
+            `https://contesthub-server-pink.vercel.app/payment?email=${user._id}`
           );
           const data = await res.json();
           allPayments.push(...data);

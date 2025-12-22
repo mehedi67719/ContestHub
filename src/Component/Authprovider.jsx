@@ -36,7 +36,7 @@ const Authprovider = ({ children }) => {
       if (!User || !User.email) return;
 
       try {
-        const res = await fetch("http://localhost:3000/user", {
+        const res = await fetch("https://contesthub-server-pink.vercel.app/user", {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'
@@ -51,6 +51,7 @@ const Authprovider = ({ children }) => {
             isAnonymous: User.isAnonymous,
             metadata: User.metadata,
             providerData: User.providerData,
+            authorization:User.accessToken
           })
         });
         const data = await res.json();
@@ -63,7 +64,7 @@ const Authprovider = ({ children }) => {
     datapost();
   }, [User]);
 
-
+console.log(User?.accessToken)
 
 
   const createaccountbygoogle = () => {
