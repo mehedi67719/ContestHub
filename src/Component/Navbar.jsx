@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
 import logo from "../assets/Logo.avif";
 import Primarybtn from "./Primarybtn";
 import Useauth from "./Useauth";
 import Swal from "sweetalert2";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useRef  } from "react";
 
 const Navbar = () => {
   const { User, logout } = Useauth();
@@ -62,8 +62,8 @@ const Navbar = () => {
   const realuser = users?.find(u => u.email === User?.email);
 
   return (
-    <header className="backdrop-blur-md bg-white/80 sticky top-0 z-50 shadow">
-      <div className="w-[90%] mx-auto flex items-center justify-between py-3">
+    <header className="w-full backdrop-blur-md bg-white/80 sticky top-0 z-50 shadow">
+      <div className="w-full max-w-[90%] mx-auto  flex items-center justify-between py-3">
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt="logo" className="w-10 h-10 rounded-md object-cover" />
           <span className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
@@ -71,12 +71,18 @@ const Navbar = () => {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
-          <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>Home</NavLink>
-          <NavLink to="/all-contests" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>All Contests</NavLink>
-          <NavLink to="/about-us" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>About Us</NavLink>
-          <NavLink to="/leaderboard" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>Leaderboard</NavLink>
-          <NavLink to="/contact-us" className={({ isActive }) => isActive ? "text-blue-600" : "text-gray-700"}>Contact Us</NavLink>
+        <nav className="hidden md:flex items-center gap-6">
+          <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600 transition-colors"}>Home</NavLink>
+          <NavLink to="/all-contests" className={({ isActive }) => isActive ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600 transition-colors"}>All Contests</NavLink>
+          <NavLink to="/about-us" className={({ isActive }) => isActive ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600 transition-colors"}>About Us</NavLink>
+          <NavLink to="/leaderboard" className={({ isActive }) => isActive ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600 transition-colors"}>Leaderboard</NavLink>
+          <NavLink to="/contact-us" className={({ isActive }) => isActive ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600 transition-colors"}>Contact Us</NavLink>
+          {User && (
+            <>
+              <NavLink to="/dashboard" className={({ isActive }) => isActive ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600 transition-colors"}>Dashboard</NavLink>
+              <NavLink to="/dashboard/participated-contests" className={({ isActive }) => isActive ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600 transition-colors"}>My Participated</NavLink>
+            </>
+          )}
         </nav>
 
         <div className="flex items-center gap-4">
@@ -91,12 +97,18 @@ const Navbar = () => {
             </button>
 
             {mobileOpen && (
-              <div className="bg-white border shadow-xl w-64 absolute top-full right-0 z-40 rounded-lg mt-2 py-3 flex flex-col gap-1">
-                <NavLink to="/" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100">Home</NavLink>
-                <NavLink to="/all-contests" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100">All Contests</NavLink>
-                <NavLink to="/about-us" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100">About Us</NavLink>
-                <NavLink to="/leaderboard" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100">Leaderboard</NavLink>
-                <NavLink to="/contact-us" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100">Contact Us</NavLink>
+              <div className="bg-white border shadow-xl w-64 absolute top-full right-0 z-40 rounded-lg mt-2 py-3 flex flex-col gap-1 max-h-[70vh] overflow-y-auto">
+                <NavLink to="/" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100 rounded-md transition-colors block">Home</NavLink>
+                <NavLink to="/all-contests" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100 rounded-md transition-colors block">All Contests</NavLink>
+                <NavLink to="/about-us" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100 rounded-md transition-colors block">About Us</NavLink>
+                <NavLink to="/leaderboard" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100 rounded-md transition-colors block">Leaderboard</NavLink>
+                <NavLink to="/contact-us" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100 rounded-md transition-colors block">Contact Us</NavLink>
+                {User && (
+                  <>
+                    <NavLink to="/dashboard" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100 rounded-md transition-colors block">Dashboard</NavLink>
+                    <NavLink to="/dashboard/participated-contests" onClick={() => setMobileOpen(false)} className="px-4 py-2 hover:bg-gray-100 rounded-md transition-colors block">My Participated</NavLink>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -108,7 +120,7 @@ const Navbar = () => {
               </button>
 
               {profileOpen && (
-                <div className="absolute right-0 mt-3 w-56 bg-white shadow-xl rounded-xl p-4 z-50 border border-gray-100">
+                <div className="absolute right-0 mt-3 w-60 bg-white shadow-xl rounded-xl p-4 z-50 border border-gray-100 max-h-[70vh] overflow-y-auto">
                   {isLoading ? (
                     <p className='text-sm text-gray-500 text-center py-2'>Loading...</p>
                   ) : error ? (
@@ -122,7 +134,7 @@ const Navbar = () => {
                           <p className="text-xs text-blue-600 bg-blue-50 px-2 rounded-full inline-block uppercase font-bold">{realuser?.role || "User"}</p>
                         </div>
                       </div>
-                      <Link to="/dashboard" onClick={() => setProfileOpen(false)} className="block py-2 px-2 text-sm rounded-md hover:bg-gray-100">Dashboard</Link>
+                      <Link to="/dashboard" onClick={() => setProfileOpen(false)} className="block py-2 px-2 text-sm rounded-md hover:bg-gray-100 transition-colors">Dashboard</Link>
                       <button onClick={handleLogout} className="w-full text-left mt-1 py-2 px-2 text-sm rounded-md hover:bg-red-50 hover:text-red-600 font-medium transition">
                         Logout
                       </button>

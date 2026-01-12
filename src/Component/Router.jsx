@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 import Root from "./Root";
 import Home from "../Pages/Home";
 import Allcontest from "../Pages/Allcontest";
@@ -28,6 +28,12 @@ import Editcontest from "../Pages/dashboard/ContestCreator/Editcontest";
 import SeeSingleContestTasks from "../Pages/dashboard/ContestCreator/SeeSingleContestTasks";
 import NotFound from "../Pages/NotFound";
 import ContactUs from "../Pages/ContactUs";
+import Faq from "../Pages/Faq";
+import TermsAndConditions from "../Pages/TermsAndConditions";
+import PrivacyPolicy from "../Pages/PrivacyPolicy";
+import HelpCenter from "../Pages/HelpCenter";
+import Blog from "../Pages/Blog";
+import Community from "../Pages/Community";
 
 
 
@@ -149,6 +155,30 @@ export const router = createBrowserRouter([
       {
         path:"*",
         Component:NotFound
+      },
+      {
+        path: "/faq",
+        Component: Faq
+      },
+      {
+        path: "/terms-and-conditions",
+        Component: TermsAndConditions
+      },
+      {
+        path: "/privacy-policy",
+        Component: PrivacyPolicy
+      },
+      {
+        path: "/help-center",
+        Component: HelpCenter
+      },
+      {
+        path: "/blog",
+        Component: Blog
+      },
+      {
+        path: "/community",
+        Component: Community
       }
     ]
   },

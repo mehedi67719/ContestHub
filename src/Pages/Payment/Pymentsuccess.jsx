@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
-import { Link, useParams, useSearchParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 
 const Pymentsuccess = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { GoXCircleFill } from 'react-icons/go';
-import { Link, useParams } from 'react-router';
+import { Link, useParams } from 'react-router-dom';
 
 
 const Paymentcancle = () => {

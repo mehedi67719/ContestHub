@@ -3,7 +3,7 @@ import Useauth from '../../Component/Useauth';
 import { FaEdit, FaTrophy, FaUserCheck } from 'react-icons/fa';
 import Primarybtn from '../../Component/Primarybtn';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const MYprofile = () => {
     const { User} = Useauth();

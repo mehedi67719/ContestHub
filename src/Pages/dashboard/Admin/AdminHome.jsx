@@ -4,7 +4,7 @@ import Useauth from '../../../Component/Useauth';
 import { FaCheckCircle, FaTimesCircle, FaTrophy, FaUsers, FaChartBar } from 'react-icons/fa';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { MdOutlinePending } from 'react-icons/md';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const AdminHome = () => {
     const { User } = Useauth();

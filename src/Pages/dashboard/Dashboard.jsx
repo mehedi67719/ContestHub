@@ -4,7 +4,7 @@ import { MdOutlineCreateNewFolder } from 'react-icons/md';
 import { TbGitPullRequestClosed } from 'react-icons/tb';
 import { RiUserSettingsLine, RiAdminLine } from 'react-icons/ri';
 import { MdOutlineSecurity } from 'react-icons/md';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Useauth from '../../Component/Useauth';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';

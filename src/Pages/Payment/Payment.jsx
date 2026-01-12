@@ -3,7 +3,7 @@ import Primarybtn from '../../Component/Primarybtn';
 import Useauth from '../../Component/Useauth';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 
 const Payment = () => {

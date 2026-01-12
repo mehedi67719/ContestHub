@@ -6,7 +6,7 @@ import Primarybtn from '../../../Component/Primarybtn';
 import Swal from 'sweetalert2';
 import Useauth from '../../../Component/Useauth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Editcontest = () => {
     const { User } = Useauth();
